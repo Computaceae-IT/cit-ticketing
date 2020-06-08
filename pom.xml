@@ -39,6 +39,22 @@
 			<artifactId>cit-cloud</artifactId>
 			<version>${cit-lib-cloud-version}</version>
 		</dependency>
+		<!-- Documentaiton on https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core -->
+		<dependency>
+			<groupId>org.eclipse.mylyn.github</groupId>
+			<artifactId>org.eclipse.egit.github.core</artifactId>
+			<version>2.1.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.computaceae.lib</groupId>
+			<artifactId>cit-cloud</artifactId>
+			<version>${cit-lib-cloud-version}</version>
+			<classifier>tests</classifier>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+
 
 	</dependencies>
 

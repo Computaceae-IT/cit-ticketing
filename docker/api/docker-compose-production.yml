@@ -1,0 +1,38 @@
+version: '3.3'
+networks:
+  bota_rc_gateway:
+    external: true
+  bota_sandbox_gateway:
+    external: true
+  bota_neu_prd_gateway:
+    external: true
+  bota_jbp_prd_gateway:
+    external: true
+  bota_bern_prd_gateway:
+    external: true
+  bota_g_prd_gateway:
+    external: true
+  bota_wfo_prd_gateway:
+    external: true
+  bota_msm_gateway:
+    external: true
+  bota_ncy_prd_gateway:
+    external: true
+services:
+  cit-ticketing:
+    image: registry.botalista-dev.ch/cit-ticketing:latest
+    networks:
+    - bota_rc_gateway
+    - bota_sandbox_gateway
+    - bota_neu_prd_gateway
+    - bota_jbp_prd_gateway
+    - bota_bern_prd_gateway
+    - bota_g_prd_gateway
+    - bota_wfo_prd_gateway
+    - bota_msm_gateway
+    - bota_ncy_prd_gateway
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3

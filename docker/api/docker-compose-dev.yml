@@ -1,0 +1,22 @@
+version: '3.7'
+networks:
+  botalista-dev-bridge:
+    external: true
+services:
+  cit-ticketing:
+    image: registry.botalista-dev.ch/cit-ticketing:dev
+    networks:
+      - botalista-dev-bridge
+    deploy:
+      replicas: 1
+      resources:
+        reservations:
+          memory: 128MB
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 5
+        window: 120s
+
+    
+    
