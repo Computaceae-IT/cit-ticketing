@@ -1,6 +1,8 @@
 package org.computaceae.ticketing.unit;
 
+import static org.junit.Assert.assertTrue;
 import org.computaceae.TestConfig;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,11 @@ public class TicketingControllerUnitTest {
 
   @Autowired
   private MockMvc mockMvc;
+
+  @Test
+  public void TODO() {
+    assertTrue(true);
+  }
 
 
   // @Test

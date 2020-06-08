@@ -1,5 +1,8 @@
 package org.computaceae.ticketing.integration;
 
+import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,9 @@ public class TicketingServiceIntegrationTest {
 
   private static Logger log = LoggerFactory.getLogger(TicketingServiceIntegrationTest.class);
 
-
+  @Test
+  public void TODO() {
+    assertTrue(true);
+  }
 
 }
