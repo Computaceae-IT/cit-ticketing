@@ -83,7 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // @formatter:off
     http.authorizeRequests()
     .antMatchers("/actuator/**","/internum/**")
-    .access("hasIpAddress('10.0.0.0/16') or hasIpAddress('127.0.0.1/32') or hasIpAddress('0:0:0:0:0:0:0:1') or hasIpAddress('193.134.189.0/24')")
+    .access("hasIpAddress('10.0.0.0/16') or hasIpAddress('127.0.0.1/32') or hasIpAddress('0:0:0:0:0:0:0:1') or hasIpAddress('193.134.187.0/24') or hasIpAddress('51.255.91.114')")
     .anyRequest().authenticated();
     
     // Session management
