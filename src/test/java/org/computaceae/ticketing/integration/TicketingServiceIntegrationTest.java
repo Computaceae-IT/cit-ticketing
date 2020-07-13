@@ -1,18 +1,33 @@
 package org.computaceae.ticketing.integration;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import java.util.List;
+import java.util.Map;
 import org.computaceae.TestConfig;
 import org.computaceae.ticketing.service.TicketingService;
+import org.computaceae.ticketing.service.TicketingServiceImpl;
+import org.eclipse.egit.github.core.Label;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import com.lib.cit.core.client.mail.FakeMailsClient;
+import com.lib.cit.core.client.mail.MailsClient;
+import com.lib.cit.core.dto.mail.MailHtmlDTO;
 import com.lib.cit.core.dto.ticketing.TicketDTO;
 import com.lib.cit.core.errors.container.value.InconsistentEmptyValue;
 import com.lib.cit.core.errors.exception.LogicalBusinessException;
@@ -26,7 +41,27 @@ public class TicketingServiceIntegrationTest {
   private static Logger log = LoggerFactory.getLogger(TicketingServiceIntegrationTest.class);
 
   @Autowired
+  private FakeMailsClient fakeMailsClient;
+
+  @MockBean
+  private MailsClient mockMailsClient;
+
+  @Autowired
   private TicketingService ticketingService;
+
+  @Before
+  public void ManageMock() {
+
+    when(mockMailsClient.send(any(MailHtmlDTO.class)))
+        .thenAnswer(new Answer<Map<String, Object>>() {
+          public Map<String, Object> answer(InvocationOnMock invocation) {
+            Object[] args = invocation.getArguments();
+            invocation.getMock();
+            return fakeMailsClient.send((MailHtmlDTO) args[0]);
+          }
+        });
+  }
+
 
   @Test
   public void createWithEmptyValueTest() {
@@ -127,5 +162,33 @@ public class TicketingServiceIntegrationTest {
     }
 
   }
+
+  @Test
+  public void contructorTest() {
+    TicketingServiceImpl t = new TicketingServiceImpl("");
+
+    assertNotNull(t.getLabels());
+    assertTrue(t.getLabels().toString(), t.getLabels().isEmpty());
+  }
+
+  @Test
+  public void getLastUpdatedIssuesTest() {
+    try {
+      this.getLastUpdatedIssuesTest();
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+  }
+
+  @Test
+  public void getLabelsTest() {
+
+    List<Label> labels = this.ticketingService.getLabels();
+
+    assertNotNull(labels);
+    assertFalse(labels.toString(), labels.isEmpty());
+  }
+
 
 }
