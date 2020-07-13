@@ -83,7 +83,6 @@ node {
 						sh """\
 						STACK_NAME=${STACK_NAME} \
 						BRANCH=${env.BRANCH_NAME} \
-					    DB_PASSWORD=${DB_PASSWORD} \
 						DOCKER_HOST=tcp://172.16.0.1:3272 \
 						docker stack deploy ${STACK_NAME} --compose-file docker/api/docker-compose-dev.yml --resolve-image always --prune"""
 					}
