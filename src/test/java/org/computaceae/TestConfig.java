@@ -14,11 +14,9 @@ public class TestConfig {
   @Bean
   public FreeMarkerConfigurer freeMarkerConfigurer() {
     FreeMarkerConfigurer freemarkerConfig = new FreeMarkerConfigurer();
-    freemarkerConfig.setTemplateLoaderPath("template");
+    freemarkerConfig.setTemplateLoaderPath("classpath:/templates");
     freemarkerConfig.setDefaultEncoding("UTF-8");
-
     Map<String, Object> freemarkerVariables = new HashMap<String, Object>();
-
     freemarkerConfig.setFreemarkerVariables(freemarkerVariables);
     return freemarkerConfig;
   }

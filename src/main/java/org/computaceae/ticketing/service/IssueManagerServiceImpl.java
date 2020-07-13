@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.egit.github.core.Issue;
@@ -17,11 +18,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.lib.cit.core.client.mail.MailsClient;
 import com.lib.cit.core.dto.mail.MailHtmlDTO;
+import com.lib.cit.core.errors.container.CustomError;
+import com.lib.cit.core.errors.container.value.InconsistentEmptyValue;
+import com.lib.cit.core.errors.container.value.InconsistentEmptyValue.Type;
+import com.lib.cit.core.errors.container.value.InconsistentPositiveValue;
+import com.lib.cit.core.errors.exception.LogicalBusinessException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -74,18 +81,27 @@ public class IssueManagerServiceImpl implements IssueManagerService {
    * 
    * @param mailTo Destination email address
    * @param issue created issue
+   * @return a boolean future. if true, the mail is sanded
+   * 
    */
   @Async
   @Override
-  public void sendCreationIssueMail(String mailTo, Issue issue) {
+  public Future<Boolean> sendCreationIssueMail(String mailTo, Issue issue) {
+    try {
+      this.manageErrors(mailTo, issue);
 
-    MailHtmlDTO mail = new MailHtmlDTO();
-    mail.setTo(mailTo);
-    mail.setConcern(NEW_ISSUE_MAIL_CONCERN);
-    mail.setHtml(this.getHtmlBody(issue, NEW_ISSUE_MAIL_CONCERN, NEW_ISSUE_TEXT_MAP));
-    this.mailsClient.send(mail);
+      MailHtmlDTO mail = new MailHtmlDTO();
+      mail.setTo(mailTo);
+      mail.setConcern(NEW_ISSUE_MAIL_CONCERN);
+      mail.setHtml(this.getHtmlBody(issue, NEW_ISSUE_MAIL_CONCERN, NEW_ISSUE_TEXT_MAP));
+      this.mailsClient.send(mail);
 
-    log.info("sendCreationIssueMail TO : " + mailTo);
+      log.info("sendCreationIssueMail TO : " + mailTo);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      return new AsyncResult<Boolean>(false);
+    }
+    return new AsyncResult<Boolean>(true);
   }
 
   /**
@@ -93,18 +109,54 @@ public class IssueManagerServiceImpl implements IssueManagerService {
    * 
    * @param mailTo Destination email address
    * @param issue updated issue
+   * @return a boolean future. if true, the mail is sanded
+   * 
    */
   @Async
   @Override
-  public void sendUpdateIssueMail(String mailTo, Issue issue) {
+  public Future<Boolean> sendUpdateIssueMail(String mailTo, Issue issue) {
+    try {
+      this.manageErrors(mailTo, issue);
 
-    MailHtmlDTO mail = new MailHtmlDTO();
-    mail.setTo(mailTo);
-    mail.setConcern(UPDATE_ISSUE_MAIL_CONCERN);
-    mail.setHtml(this.getHtmlBody(issue, UPDATE_ISSUE_MAIL_CONCERN, UPDATE_ISSUE_TEXT_MAP));
-    this.mailsClient.send(mail);
+      MailHtmlDTO mail = new MailHtmlDTO();
+      mail.setTo(mailTo);
+      mail.setConcern(UPDATE_ISSUE_MAIL_CONCERN);
+      mail.setHtml(this.getHtmlBody(issue, UPDATE_ISSUE_MAIL_CONCERN, UPDATE_ISSUE_TEXT_MAP));
+      this.mailsClient.send(mail);
 
-    log.info("sendUpdateIssueMail TO : " + mailTo);
+      log.info("sendUpdateIssueMail TO : " + mailTo);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      return new AsyncResult<Boolean>(false);
+    }
+
+    return new AsyncResult<Boolean>(true);
+  }
+
+  private void manageErrors(String mailTo, Issue issue) {
+    List<CustomError> errors = new ArrayList<>();
+    if (StringUtils.isEmpty(mailTo))
+      errors.add(new InconsistentEmptyValue(Type.object, "mailTo"));
+    if (issue == null)
+      errors.add(new InconsistentEmptyValue(Type.object, "issue"));
+    if (issue != null) {
+      if (issue.getId() <= 0) {
+        errors.add(new InconsistentPositiveValue("issue.id", issue.getId()));
+      }
+      if (StringUtils.isEmpty(issue.getTitle())) {
+        errors.add(new InconsistentEmptyValue(Type.property, "issue.title"));
+      }
+      if (StringUtils.isEmpty(issue.getBody())) {
+        errors.add(new InconsistentEmptyValue(Type.property, "issue.body"));
+      }
+      if (StringUtils.isEmpty(issue.getHtmlUrl())) {
+        errors.add(new InconsistentEmptyValue(Type.property, "issue.htmlUrl"));
+      }
+
+    }
+
+    if (!errors.isEmpty())
+      throw new LogicalBusinessException(errors);
   }
 
   private String getHtmlBody(Issue issue, String title, Map<String, String> text) {
