@@ -29,7 +29,7 @@ node {
 			}
 
 			stage('Build complet') {
-				def JAVA_ENV = "-e app.token.github=CI"
+				def JAVA_ENV = "-e app.token.github=CI -e app.admin.mail=test@mail.com"
 				docker.image('maven:3.5.2-jdk-8-alpine').inside("-v maven-repo:/root/.m2 ${JAVA_ENV}") {
 					sh 'mvn -Duser.timezone=Europe/Zurich clean install'
 				
