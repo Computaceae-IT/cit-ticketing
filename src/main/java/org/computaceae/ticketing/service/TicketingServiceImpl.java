@@ -26,6 +26,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import com.lib.cit.core.dto.ticketing.TicketDTO;
+import com.lib.cit.core.errors.container.CustomError;
 import com.lib.cit.core.errors.container.value.InconsistentEmptyValue;
 import com.lib.cit.core.errors.container.value.InconsistentEmptyValue.Type;
 import com.lib.cit.core.errors.exception.LogicalBusinessException;
@@ -227,25 +228,42 @@ public class TicketingServiceImpl implements TicketingService {
   }
 
   private Issue constructIssue(TicketDTO ticket) {
+    if (ticket == null)
+      throw new IllegalArgumentException("ticket is empty");
 
-    if (ticket == null) {
-      return null;
+    List<CustomError> errors = new ArrayList<>();
+
+    if (StringUtils.isEmpty(ticket.getTitle())) {
+      errors.add(new InconsistentEmptyValue(Type.property, "ticket.title"));
     }
+
+    if (StringUtils.isEmpty(ticket.getLabel())) {
+      errors.add(new InconsistentEmptyValue(Type.property, "ticket.label"));
+    }
+
+    if (StringUtils.isEmpty(ticket.getUrl())) {
+      errors.add(new InconsistentEmptyValue(Type.property, "ticket.url"));
+    }
+
+    if (!errors.isEmpty())
+      throw new LogicalBusinessException(errors);
 
     Issue issue = new Issue();
 
     String abbr = null;
 
     // get the abbreviation from the module
-    if (ticket.getModule() == null) {
-      if (ticket.getUrl() != null) {
+    if (StringUtils.isEmpty(ticket.getModule())) {
+      if (!StringUtils.isEmpty(ticket.getUrl())) {
         Pattern p = Pattern.compile("#/[a-z]+/");
         Matcher m = p.matcher(ticket.getUrl());
 
         if (m.find()) {
           String result = m.group();
-          String module = result.substring(2, result.length() - 1);
-          abbr = this.getModuleAbbreviation(module);
+          if (result != null && result.length() > 3) {
+            String module = result.substring(2, result.length() - 1);
+            abbr = this.getModuleAbbreviation(module);
+          }
         } else {
           abbr = this.getModuleAbbreviation("home");
         }
@@ -255,10 +273,10 @@ public class TicketingServiceImpl implements TicketingService {
     }
 
     // construct title
-    String title = abbr != null ? "[" + abbr + "] " : "";
+    StringBuilder sb = new StringBuilder(!StringUtils.isEmpty(abbr) ? "[" + abbr + "] " : "");
 
-    title += ticket.getTitle();
-    issue.setTitle(title);
+    sb.append(ticket.getTitle());
+    issue.setTitle(sb.toString());
 
     // construct the body of the issue
     String body = "Url : " + ticket.getUrl() + "\n"
@@ -273,12 +291,20 @@ public class TicketingServiceImpl implements TicketingService {
   }
 
   private List<Label> getLabels(TicketDTO ticket) {
+    if (ticket == null)
+      throw new IllegalArgumentException("ticket is empty");
+    if (StringUtils.isEmpty(ticket.getLabel()))
+      throw new IllegalArgumentException("ticket.label is empty");
+    if (StringUtils.isEmpty(ticket.getUrl()))
+      throw new IllegalArgumentException("ticket.url is empty");
+
     List<Label> labels = new ArrayList<>();
-    if (ticket != null && !StringUtils.isEmpty(ticket.getLabel())) {
-      for (Label label : this.labels) {
-        if (ticket.getLabel().equals(label.getName()))
-          labels.add(label);
-      }
+    for (Label label : this.labels) {
+      if (ticket.getLabel().equals(label.getName()))
+        labels.add(label);
+    }
+    if (labels.isEmpty()) {
+      throw new LogicalBusinessException(new InconsistentEmptyValue(Type.property, "ticket.label"));
     }
     boolean findIntance = false;
     for (Entry<String, Label> entry : this.instanceToLabel.entrySet()) {
