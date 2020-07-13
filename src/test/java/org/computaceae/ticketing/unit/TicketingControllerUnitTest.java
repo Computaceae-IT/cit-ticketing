@@ -3,6 +3,7 @@ package org.computaceae.ticketing.unit;
 import static org.junit.Assert.assertTrue;
 import org.computaceae.TestConfig;
 import org.computaceae.ticketing.service.TicketingService;
+import org.computaceae.ticketing.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -29,6 +30,9 @@ public class TicketingControllerUnitTest {
 
   @MockBean
   private TicketingService ticketingService;
+
+  @MockBean
+  private UserService UserService;
 
   @Autowired
   private MockMvc mockMvc;
