@@ -1,7 +1,5 @@
 package org.computaceae;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -14,10 +12,10 @@ public class TestConfig {
   @Bean
   public FreeMarkerConfigurer freeMarkerConfigurer() {
     FreeMarkerConfigurer freemarkerConfig = new FreeMarkerConfigurer();
+
     freemarkerConfig.setTemplateLoaderPath("classpath:/templates");
     freemarkerConfig.setDefaultEncoding("UTF-8");
-    Map<String, Object> freemarkerVariables = new HashMap<String, Object>();
-    freemarkerConfig.setFreemarkerVariables(freemarkerVariables);
+
     return freemarkerConfig;
   }
 

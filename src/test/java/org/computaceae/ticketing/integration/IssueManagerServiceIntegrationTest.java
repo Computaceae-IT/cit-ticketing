@@ -67,7 +67,70 @@ public class IssueManagerServiceIntegrationTest {
   }
 
   @Test
-  public void sendMailWithEmptyValueTest() {
+  public void sendUpdateMailWithEmptyValueTest() {
+    try {
+      Future<Boolean> resultFuture = this.issueManagerService.sendUpdateIssueMail(null, null);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    Issue issue = new Issue();
+
+    try {
+      Future<Boolean> resultFuture = this.issueManagerService.sendUpdateIssueMail(null, issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendUpdateIssueMail("mail@mail.com", issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    issue.setId(123l);
+
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendUpdateIssueMail("mail@mail.com", issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    issue.setBody("MOCK_BODY");
+
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendUpdateIssueMail("mail@mail.com", issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    issue.setHtmlUrl("MOCK_HTMLURL");
+
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendUpdateIssueMail("mail@mail.com", issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+  }
+
+  @Test
+  public void sendCreationMailWithEmptyValueTest() {
     try {
       Future<Boolean> resultFuture = this.issueManagerService.sendCreationIssueMail(null, null);
       assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
@@ -130,7 +193,7 @@ public class IssueManagerServiceIntegrationTest {
   }
 
   @Test
-  public void sendMailTest() {
+  public void sendCreationIssueMailTest() {
 
     try {
       Future<Boolean> resultFuture =
@@ -140,65 +203,21 @@ public class IssueManagerServiceIntegrationTest {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
+    
+  }
+  
+  @Test
+  public void sendUpdateIssueMailTest() {
 
-
-
-    // /*** EMPTY PROPERTIES ***/
-    // TicketDTO ticket = new TicketDTO();
-    //
-    // try {
-    // this.ticketingService.create(ticket);
-    // throw new AssertionError("No logicalBusinessException raised for create with null object");
-    // } catch (LogicalBusinessException e) {
-    // assertTrue(e.toString(), e.getListError() != null);
-    // assertTrue(e.toString(), e.getListError().size() == 3);
-    // // Title empty
-    // assertTrue(e.getListError().get(0).toString(),
-    // e.getListError().get(0) instanceof InconsistentEmptyValue);
-    // assertTrue(e.getListError().get(0).toString(),
-    // e.getListError().get(0).getKey().equals("ticket.title"));
-    // // label empty
-    // assertTrue(e.getListError().get(1).toString(),
-    // e.getListError().get(1) instanceof InconsistentEmptyValue);
-    // assertTrue(e.getListError().get(1).toString(),
-    // e.getListError().get(1).getKey().equals("ticket.label"));
-    // // label url
-    // assertTrue(e.getListError().get(2).toString(),
-    // e.getListError().get(2) instanceof InconsistentEmptyValue);
-    // assertTrue(e.getListError().get(2).toString(),
-    // e.getListError().get(2).getKey().equals("ticket.url"));
-    //
-    // } catch (Exception e) {
-    // log.error(e.getMessage(), e);
-    // throw new AssertionError(e);
-    // }
-    //
-    // /*** ONLY TITLE ***/
-    // ticket.setTitle("MOCK TITLE");
-    //
-    // try {
-    // this.ticketingService.create(ticket);
-    // throw new AssertionError("No logicalBusinessException raised for create with null object");
-    // } catch (LogicalBusinessException e) {
-    // assertTrue(e.toString(), e.getListError() != null);
-    // assertTrue(e.toString(), e.getListError().size() == 2);
-    //
-    // // label empty
-    // assertTrue(e.getListError().get(0).toString(),
-    // e.getListError().get(0) instanceof InconsistentEmptyValue);
-    // assertTrue(e.getListError().get(0).toString(),
-    // e.getListError().get(0).getKey().equals("ticket.label"));
-    //
-    // // label url
-    // assertTrue(e.getListError().get(1).toString(),
-    // e.getListError().get(1) instanceof InconsistentEmptyValue);
-    // assertTrue(e.getListError().get(1).toString(),
-    // e.getListError().get(1).getKey().equals("ticket.url"));
-    //
-    // } catch (Exception e) {
-    // log.error(e.getMessage(), e);
-    // throw new AssertionError(e);
-    // }
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendUpdateIssueMail("ci@mock.mail", issue);
+      assertTrue(resultFuture.get(10, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    
   }
 
 }
