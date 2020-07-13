@@ -25,7 +25,7 @@ node {
 			}
 				
 			stage('Login registry') {
-		        sh "docker login registry.botalista-dev.ch --username REGISTRY_USERNAME --password ${REGISTRY_PASSWORD}"
+		        sh "docker login registry.botalista-dev.ch --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD}"
 			}
 
 			stage('Build complet') {
