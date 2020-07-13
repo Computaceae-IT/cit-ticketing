@@ -174,7 +174,7 @@ public class TicketingServiceIntegrationTest {
   @Test
   public void getLastUpdatedIssuesTest() {
     try {
-      this.getLastUpdatedIssuesTest();
+      this.ticketingService.getLastUpdatedIssues();
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);

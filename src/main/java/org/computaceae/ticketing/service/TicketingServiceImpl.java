@@ -104,6 +104,7 @@ public class TicketingServiceImpl implements TicketingService {
    * 
    * 
    */
+  @Override
   @Scheduled(cron = "0 2 0 * * *")
   // At 00:02.
   public void getLastUpdatedIssues() {
