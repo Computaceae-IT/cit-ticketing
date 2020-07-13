@@ -26,6 +26,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import com.lib.cit.core.dto.ticketing.TicketDTO;
+import com.lib.cit.core.errors.container.value.InconsistentEmptyValue;
+import com.lib.cit.core.errors.container.value.InconsistentEmptyValue.Type;
+import com.lib.cit.core.errors.exception.LogicalBusinessException;
 import com.lib.cit.core.utils.LocalDateUtils;
 
 /**
@@ -162,6 +165,9 @@ public class TicketingServiceImpl implements TicketingService {
    */
   @Override
   public TicketDTO create(TicketDTO ticket) {
+    if (ticket == null) {
+      throw new LogicalBusinessException(new InconsistentEmptyValue(Type.object, "ticket"));
+    }
     Issue issue = this.constructIssue(ticket);
     try {
       issue = this.issueService.createIssue(user, repository, issue);
