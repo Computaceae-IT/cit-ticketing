@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableAsync
 @EnableScheduling
-@EnableFeignClients(value = {})
-@SpringBootApplication(scanBasePackages = {"org.computaceae"})
+@EnableFeignClients(value = {"com.lib.cit.core"})
+@SpringBootApplication(scanBasePackages = {"org.computaceae", "com.lib.cit.core"})
 public class CitTicketingApplication {
 
   public static void main(String[] args) {

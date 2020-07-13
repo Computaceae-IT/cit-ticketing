@@ -15,19 +15,43 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lib.cit.core.controller.AbstractController;
 import com.lib.cit.core.dto.ticketing.TicketDTO;
 
+/**
+ * <b>TicketingControllerImpl</b>
+ * <p>
+ * <strong>Controller</strong> that handles all internum (without authentication) data on ticket
+ * exchange
+ * </p>
+ * 
+ * @author SiropOps
+ * @version 1.0
+ */
 @RestController
-@RequestMapping("/")
+@RequestMapping("/internum")
 public class TicketingControllerImpl extends AbstractController {
 
   @Autowired
   private TicketingService ticketingService;
 
-  @GetMapping("internum/labels")
+  /**
+   * Get all available issues on GitHub repository
+   * 
+   * @return a http status [OK, NOT ACCEPTABLE, METHOD_NOT_ALLOWED] with a list of labels
+   * 
+   */
+  @GetMapping("/labels")
   public ResponseEntity<List<Label>> getLabelsByInternumPass() {
     return new ResponseEntity<>(this.ticketingService.getLabels(), HttpStatus.OK);
   }
 
-  @PostMapping("internum/")
+  /**
+   * Post a new ticket in GitHub repository
+   * 
+   * @param ticket ticketDTO to createO
+   * @return a http status [CREATED, NOT ACCEPTABLE, METHOD_NOT_ALLOWED] with the TicketDTO object
+   *         created
+   * 
+   */
+  @PostMapping("/")
   public @ResponseBody ResponseEntity<TicketDTO> post(@RequestBody TicketDTO ticket) {
     return new ResponseEntity<>(this.ticketingService.create(ticket), HttpStatus.CREATED);
   }

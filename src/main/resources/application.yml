@@ -4,11 +4,11 @@ server:
   tomcat:
     remote-ip-header: x-forwarded-for
     protocol-header: x-forwarded-proto
-logging.file: log/app.log
 logging:
   file:
     max-history: 20
     max-size: 50MB
+    name: log/app.log
   level:
     root: INFO
     org.springframework.web: INFO
@@ -61,6 +61,9 @@ spring:
      name: cit-ticketing
   banner:
     location: classpath:/static/bannername.txt
+  freemarker:
+    template-loader-path: classpath:/templates
+    suffix: .ftl
 info:
   app:
     name: '@project.name@'
