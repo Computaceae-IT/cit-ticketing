@@ -11,9 +11,10 @@ node {
 	def ID_BUILD = "cit-ticketing-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
     def STACK_NAME = "MSM_CIT_TICKETING_${env.BRANCH_NAME.toUpperCase()}"
     
-    withCredentials([	 					
-                    string(credentialsId: 'registry_admin', variable: 'REGISTRY_ADMIN'),
-					string(credentialsId: 'jdbc.password', variable: 'DB_PASSWORD')  
+    withCredentials([					
+                    string(credentialsId: 'registry.username', variable: 'REGISTRY_USERNAME'),
+					string(credentialsId: 'registry.password', variable: 'REGISTRY_PASSWORD'),
+					string(credentialsId: 'app.token.github', variable: 'TOKEN_GITHUB'),
 				]) {
 
 	    try {
@@ -24,11 +25,12 @@ node {
 			}
 				
 			stage('Login registry') {
-		        sh "docker login registry.botalista-dev.ch --username registry_admin --password ${REGISTRY_ADMIN}"
+		        sh "docker login registry.botalista-dev.ch --username REGISTRY_USERNAME --password ${REGISTRY_PASSWORD}"
 			}
 
 			stage('Build complet') {
-				docker.image('maven:3.5.2-jdk-8-alpine').inside("-v maven-repo:/root/.m2") {
+				def JAVA_ENV = "-e app.token.github=CI"
+				docker.image('maven:3.5.2-jdk-8-alpine').inside("-v maven-repo:/root/.m2 ${JAVA_ENV}") {
 					sh 'mvn -Duser.timezone=Europe/Zurich clean install'
 				
 		    	}
