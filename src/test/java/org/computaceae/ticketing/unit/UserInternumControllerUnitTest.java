@@ -52,7 +52,7 @@ public class UserInternumControllerUnitTest {
             put("MOCK_USER2", "MOCK_USER2@MOCK.COM");
             put("MOCK_USER3", "MOCK_USER3@MOCK.COM");
           }
-        })).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+        })).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
   }
 
 }
