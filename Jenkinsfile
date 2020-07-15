@@ -69,7 +69,7 @@ node {
 					stage("Deploy CIT-Ticketing On Docker PRODUCTION environment") {
 						sh """\
 						STACK_NAME=MSM_CIT-TICKETING_PRD \
-					    DB_PASSWORD=${DB_PASSWORD} \
+					    BRANCH=${env.BRANCH_NAME} \
 						DOCKER_HOST=tcp://172.16.0.1:3272 \
 						docker stack deploy MSM_CIT_TICKETING_PRD --compose-file docker/api/docker-compose-production.yml --resolve-image always --prune"""
 					}
