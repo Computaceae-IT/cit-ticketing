@@ -7,6 +7,11 @@ services:
     image: registry.botalista-dev.ch/cit-ticketing:dev
     networks:
       - botalista-dev-bridge
+    environment:
+    - app.application.mail=cyril.boillat@ville-ge.ch
+    - app.github.user=CJB-Geneve
+    - app.github.repository=cit-ticketing
+    - app.github.token=${TOKEN_GITHUB}
     deploy:
       replicas: 1
       resources:

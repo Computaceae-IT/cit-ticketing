@@ -31,8 +31,18 @@ services:
     - bota_wfo_prd_gateway
     - bota_msm_gateway
     - bota_ncy_prd_gateway
+    environment:
+    - app.application.mail=cyril.boillat@ville-ge.ch
+    - app.github.user=CJB-Geneve
+    - app.github.repository=cit-ticketing
+    - app.github.token=${TOKEN_GITHUB}
     deploy:
       replicas: 1
+      resources:
+        reservations:
+          memory: 128MB
       restart_policy:
         condition: on-failure
-        max_attempts: 3
+        delay: 10s
+        max_attempts: 5
+        window: 120s
