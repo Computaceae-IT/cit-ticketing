@@ -29,7 +29,6 @@ import com.lib.cit.core.dto.ticketing.TicketDTO;
 import com.lib.cit.core.errors.container.CustomError;
 import com.lib.cit.core.errors.container.value.InconsistentEmptyValue;
 import com.lib.cit.core.errors.container.value.InconsistentEmptyValue.Type;
-import com.lib.cit.core.errors.container.value.InconsistentUidValue;
 import com.lib.cit.core.errors.exception.LogicalBusinessException;
 import com.lib.cit.core.utils.LocalDateUtils;
 

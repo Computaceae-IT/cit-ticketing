@@ -58,9 +58,9 @@ public class TicketingServiceUnitTest {
   @Autowired
   private TicketingService ticketingService;
 
-  private final TicketDTO ticket = new TicketDTO();
-  private final List<Label> labels = new ArrayList<>();
-  private final Issue issue = new Issue();
+  private final TicketDTO mockTicket = new TicketDTO();
+  private final List<Label> mockLabels = new ArrayList<>();
+  private final Issue mockIssue = new Issue();
 
   @Before
   public void manageMock() {
@@ -87,35 +87,36 @@ public class TicketingServiceUnitTest {
         });
 
 
-    ticket.setTitle("MOCK TITLE");
-    ticket.setLabel(TicketingServiceImpl.OFFICIAL_LABEL_NAMES.get(1));
-    ticket.setUrl("MOCK_URL");
+    mockTicket.setTitle("MOCK TITLE");
+    mockTicket.setLabel(TicketingServiceImpl.OFFICIAL_LABEL_NAMES.get(1));
+    mockTicket.setUrl("MOCK_URL");
+    mockTicket.setError("MOCK_ERROR");
 
-    issue.setId(Integer.MAX_VALUE);
-    issue.setTitle(ticket.getTitle());
-    issue.setHtmlUrl("MOCK_HTML_URL");
-    issue.setBody("MOCK_BODY");
-    issue.setUpdatedAt(new Date());
+    mockIssue.setId(Integer.MAX_VALUE);
+    mockIssue.setTitle(mockTicket.getTitle());
+    mockIssue.setHtmlUrl("MOCK_HTML_URL");
+    mockIssue.setBody("MOCK_BODY");
+    mockIssue.setUpdatedAt(new Date());
 
 
     TicketingServiceImpl.OFFICIAL_LABEL_NAMES.forEach(name -> {
       Label l = new Label();
       l.setName(name);
-      labels.add(l);
+      mockLabels.add(l);
     });
 
     try {
-      given(mockLabelService.getLabels(anyString(), anyString())).willReturn(labels);
+      given(mockLabelService.getLabels(anyString(), anyString())).willReturn(mockLabels);
     } catch (IOException e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
 
     List<Issue> issues = new ArrayList<>();
-    issues.add(this.issue);
+    issues.add(this.mockIssue);
     try {
       given(mockIssueService.createIssue(anyString(), anyString(), any(Issue.class)))
-          .willReturn(this.issue);
+          .willReturn(this.mockIssue);
 
       given(mockIssueService.getIssues(anyString(), anyString(), any())).willReturn(issues);
     } catch (IOException e) {
@@ -129,8 +130,23 @@ public class TicketingServiceUnitTest {
   @Test
   public void createTest() {
 
+
     try {
-      this.ticketingService.create(this.ticket);
+      this.ticketingService.create(this.mockTicket);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    TicketDTO ticket = new TicketDTO();
+    ticket.setTitle(mockTicket.getTitle());
+    ticket.setLabel(mockTicket.getLabel());
+    ticket.setUrl(mockTicket.getUrl());
+    ticket.setError(mockTicket.getError());
+
+    try {
+      ticket.setUrl("http://mock_url/#/m/");
+      this.ticketingService.create(ticket);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
