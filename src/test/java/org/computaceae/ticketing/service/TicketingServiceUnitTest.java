@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.computaceae.TestConfig;
@@ -33,7 +34,6 @@ import com.lib.cit.core.client.mail.FakeMailsClient;
 import com.lib.cit.core.client.mail.MailsClient;
 import com.lib.cit.core.dto.mail.MailHtmlDTO;
 import com.lib.cit.core.dto.ticketing.TicketDTO;
-import com.lib.cit.core.errors.exception.LogicalBusinessException;
 
 @ActiveProfiles("test")
 @Import(TestConfig.class)
@@ -95,6 +95,7 @@ public class TicketingServiceUnitTest {
     issue.setTitle(ticket.getTitle());
     issue.setHtmlUrl("MOCK_HTML_URL");
     issue.setBody("MOCK_BODY");
+    issue.setUpdatedAt(new Date());
 
 
     TicketingServiceImpl.OFFICIAL_LABEL_NAMES.forEach(name -> {
@@ -110,23 +111,38 @@ public class TicketingServiceUnitTest {
       throw new AssertionError(e);
     }
 
+    List<Issue> issues = new ArrayList<>();
+    issues.add(this.issue);
     try {
       given(mockIssueService.createIssue(anyString(), anyString(), any(Issue.class)))
           .willReturn(this.issue);
+
+      given(mockIssueService.getIssues(anyString(), anyString(), any())).willReturn(issues);
     } catch (IOException e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
+
   }
 
 
   @Test
   public void createTest() {
-    
+
     try {
       this.ticketingService.create(this.ticket);
-    } catch (LogicalBusinessException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+  }
+
+  @Test
+  public void getLastUpdatedIssuesTest() {
+
+    try {
+      this.ticketingService.getLastUpdatedIssues();
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
