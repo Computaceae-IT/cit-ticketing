@@ -105,6 +105,10 @@ public class TicketingServiceUnitTest {
       mockLabels.add(l);
     });
 
+    Label l = new Label();
+    l.setName("mock-instance");
+    mockLabels.add(l);
+
     try {
       given(mockLabelService.getLabels(anyString(), anyString())).willReturn(mockLabels);
     } catch (IOException e) {
@@ -145,56 +149,61 @@ public class TicketingServiceUnitTest {
     ticket.setError(mockTicket.getError());
 
     try {
-      ticket.setUrl("http://mock_url/#/m/");
+      ticket.setUrl("http://mock.url/#/m/");
       this.ticketingService.create(ticket);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
     try {
-      ticket.setUrl("http://mock_url/#/collective/");
+      ticket.setUrl("http://mock.url/#/collective/");
       this.ticketingService.create(ticket);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
     try {
-      ticket.setUrl("http://mock_url/#/cultivated/");
+      ticket.setUrl("http://mock.url/#/cultivated/");
       this.ticketingService.create(ticket);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
     try {
-      ticket.setUrl("http://mock_url/#/is/");
+      ticket.setUrl("http://mock.url/#/is/");
       this.ticketingService.create(ticket);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
     try {
-      ticket.setUrl("http://mock_url/#/harvest/");
+      ticket.setUrl("http://mock.url/#/harvest/");
       this.ticketingService.create(ticket);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
     try {
-      ticket.setUrl("http://mock_url/#/home/");
+      ticket.setUrl("http://mock.url/#/home/");
       this.ticketingService.create(ticket);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
-    
-    
-    
+
+    ticket.setAuthor("MOCK_AUTHOR");
+    try {
+      this.ticketingService.create(ticket);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
 
   }
 
