@@ -97,6 +97,9 @@ public class IssueManagerServiceImpl implements IssueManagerService {
       this.mailsClient.send(mail);
 
       log.info("sendCreationIssueMail TO : " + mailTo);
+    } catch (LogicalBusinessException e) {
+      log.error(e.getListError().toString(), e);
+      return new AsyncResult<Boolean>(false);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       return new AsyncResult<Boolean>(false);

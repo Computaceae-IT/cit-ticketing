@@ -48,13 +48,11 @@ public class TicketingServiceImpl implements TicketingService {
 
   private IssueService issueService;
   private LabelService labelService;
-  private final String user = "CJB-Geneve";
-  private final String repository = "cit-ticketing";
 
-  private final List<String> officialLabelNames = Arrays.asList("bug", "missing blocking feature",
+  final static List<String> OFFICIAL_LABEL_NAMES = Arrays.asList("bug", "missing blocking feature",
       "missing feature", "enhancement", "optional enhancement", "question");
 
-  private final List<Label> labels;
+  private final List<Label> labels = new ArrayList<>();
 
   private final Map<String, Label> instanceToLabel = new HashMap<>();
 
@@ -64,6 +62,9 @@ public class TicketingServiceImpl implements TicketingService {
   @Autowired
   private IssueManagerService issueManagerService;
 
+  private final String user;
+  private final String repository;
+
 
   /**
    * TicketingServiceImpl constructor.
@@ -72,23 +73,33 @@ public class TicketingServiceImpl implements TicketingService {
    * </p>
    * 
    * @param token GitHub's token
+   * @param user GitHub's user
+   * @param repository GitHub's repository
    */
+  public TicketingServiceImpl(@Value("${app.github.token}") String token,
+      @Value("${app.github.user}") String user,
+      @Value("${app.github.repository}") String repository) {
+    if (StringUtils.isEmpty(token))
+      throw new IllegalArgumentException("Token is empty");
+    if (StringUtils.isEmpty(user))
+      throw new IllegalArgumentException("User is empty");
+    if (StringUtils.isEmpty(repository))
+      throw new IllegalArgumentException("Repository is empty");
 
-  public TicketingServiceImpl(@Value("${app.token.github}") String token) {
     GitHubClient client = new GitHubClient();
     client.setOAuth2Token(token);
     this.issueService = new IssueService(client);
     this.labelService = new LabelService(client);
+    this.user = user;
+    this.repository = repository;
 
     /***** LABEL INITIALIZION ****/
-    List<Label> l;
     try {
-      l = this.labelService.getLabels(user, repository);
-    } catch (IOException e) {
-      l = new ArrayList<>();
-      log.error(e.getMessage(), e);
+      this.labels.addAll(this.labelService.getLabels(this.user, this.repository));
+    } catch (Exception e) {
+      log.warn(e.getMessage());
     }
-    this.labels = l;
+
 
     /***** INTANCE MAP INITIALIZION ****/
     for (Label label : this.labels) {
@@ -138,7 +149,7 @@ public class TicketingServiceImpl implements TicketingService {
     List<Label> list = new ArrayList<>();
 
     for (Label label : this.labels) {
-      if (label != null && officialLabelNames.contains(label.getName())) {
+      if (label != null && OFFICIAL_LABEL_NAMES.contains(label.getName())) {
         list.add(label);
       }
     }
@@ -150,8 +161,8 @@ public class TicketingServiceImpl implements TicketingService {
           return 1;
         if (o2 == null)
           return -1;
-        int o1Index = officialLabelNames.indexOf(o1.getName());
-        int o2Index = officialLabelNames.indexOf(o2.getName());
+        int o1Index = OFFICIAL_LABEL_NAMES.indexOf(o1.getName());
+        int o2Index = OFFICIAL_LABEL_NAMES.indexOf(o2.getName());
         return Integer.compare(o1Index, o2Index);
       }
     };
@@ -172,10 +183,11 @@ public class TicketingServiceImpl implements TicketingService {
     }
     Issue issue = this.constructIssue(ticket);
     try {
-      issue = this.issueService.createIssue(user, repository, issue);
+      issue = this.issueService.createIssue(this.user, this.repository, issue);
       ticket.setHtmlUrl(issue.getHtmlUrl());
       if (!StringUtils.isEmpty(ticket.getError()))
-        this.issueService.createComment(user, repository, issue.getNumber(), ticket.getError());
+        this.issueService.createComment(this.user, this.repository, issue.getNumber(),
+            ticket.getError());
 
       this.issueManagerService
           .sendCreationIssueMail(this.userService.getEmail(this.getUsername(issue)), issue);
@@ -221,7 +233,7 @@ public class TicketingServiceImpl implements TicketingService {
 
   private List<Issue> getAllIssues() {
     try {
-      return this.issueService.getIssues(user, repository, null);
+      return this.issueService.getIssues(this.user, this.repository, null);
     } catch (IOException e) {
       log.error(e.getMessage(), e);
     }

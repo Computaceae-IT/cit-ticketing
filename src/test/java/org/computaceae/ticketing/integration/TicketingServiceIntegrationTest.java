@@ -165,8 +165,41 @@ public class TicketingServiceIntegrationTest {
 
   @Test
   public void contructorTest() {
-    TicketingServiceImpl t = new TicketingServiceImpl("");
+    TicketingServiceImpl t;
+    try {
+      t = new TicketingServiceImpl("", "", "");
+      throw new AssertionError("No IllegalArgumentException raised for create with null object");
+    } catch (IllegalArgumentException e) {
+      assertNotNull(e.getMessage());
+      assertTrue(e.getMessage(), e.getMessage().contains("is empty"));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
 
+    try {
+      t = new TicketingServiceImpl("MOCK", "", "");
+      throw new AssertionError("No IllegalArgumentException raised for create with null object");
+    } catch (IllegalArgumentException e) {
+      assertNotNull(e.getMessage());
+      assertTrue(e.getMessage(), e.getMessage().contains("is empty"));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    
+    try {
+      t = new TicketingServiceImpl("MOCK", "MOCK", "");
+      throw new AssertionError("No IllegalArgumentException raised for create with null object");
+    } catch (IllegalArgumentException e) {
+      assertNotNull(e.getMessage());
+      assertTrue(e.getMessage(), e.getMessage().contains("is empty"));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    
+    t = new TicketingServiceImpl("MOCK", "MOCK", "MOCK");
     assertNotNull(t.getLabels());
     assertTrue(t.getLabels().toString(), t.getLabels().isEmpty());
   }

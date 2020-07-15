@@ -1,1 +1,3 @@
 app.admin.mail=[DEFAULT MAIL IF THE USER DOES NOT HAVE ONE]
+app.github.user=[GITHUB USER / ORGANISATION]
+app.github.repository=[GITHUB REPOSITORY'S NAME]

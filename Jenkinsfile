@@ -100,7 +100,7 @@ node {
 		}catch (InterruptedException err) {
 			// nothing
 		}catch (Exception err) {
-	        mail (to: 'cyril.boillat@ville-ge.ch, gael.boquet@ville-ge.ch',
+	        mail (to: 'cyril.boillat@ville-ge.ch',
 			subject: "[ ERROR ] Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) is build error", 
 			body: "Please go to ${env.JOB_URL}.\nPlease go to console ${env.BUILD_URL}console.\n\n${err}");
 	        throw err
