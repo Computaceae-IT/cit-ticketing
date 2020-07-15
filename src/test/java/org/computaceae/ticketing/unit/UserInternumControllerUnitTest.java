@@ -1,8 +1,8 @@
 package org.computaceae.ticketing.unit;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.HashMap;
 import org.computaceae.TestConfig;
 import org.computaceae.ticketing.service.TicketingService;
 import org.computaceae.ticketing.service.UserService;
@@ -19,16 +19,15 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lib.cit.core.dto.ticketing.TicketDTO;
 
 @WebMvcTest
 @ActiveProfiles("test")
 @Import(TestConfig.class)
 @RunWith(SpringRunner.class)
-public class TicketingControllerUnitTest {
+public class UserInternumControllerUnitTest {
 
   @SuppressWarnings("unused")
-  private static Logger log = LoggerFactory.getLogger(TicketingControllerUnitTest.class);
+  private static Logger log = LoggerFactory.getLogger(UserInternumControllerUnitTest.class);
 
   protected final ObjectMapper mapper = new ObjectMapper();
 
@@ -41,15 +40,19 @@ public class TicketingControllerUnitTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @Test
-  public void getLabelsByInternumPassTest() throws Exception {
-    this.mockMvc.perform(get("/internum/labels")).andExpect(status().isOk());
-  }
 
   @Test
-  public void postTest() throws Exception {
-    this.mockMvc.perform(post("/internum/").content(mapper.writeValueAsString(new TicketDTO()))
-        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+  @SuppressWarnings("serial")
+  public void putUsersTest() throws Exception {
+
+    this.mockMvc.perform(
+        put("/internum/user/").content(mapper.writeValueAsString(new HashMap<String, String>() {
+          {
+            put("MOCK_USER1", "MOCK_USER1@MOCK.COM");
+            put("MOCK_USER2", "MOCK_USER2@MOCK.COM");
+            put("MOCK_USER3", "MOCK_USER3@MOCK.COM");
+          }
+        })).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
   }
 
 }
