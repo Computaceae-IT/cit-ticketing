@@ -32,7 +32,7 @@ services:
     - bota_msm_gateway
     - bota_ncy_prd_gateway
     environment:
-    - app.application.mail=cyril.boillat@ville-ge.ch
+    - app.admin.mail=cyril.boillat@ville-ge.ch
     - app.github.user=CJB-Geneve
     - app.github.repository=cit-ticketing
     - app.github.token=${TOKEN_GITHUB}
