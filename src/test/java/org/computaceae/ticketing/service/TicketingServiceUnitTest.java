@@ -151,6 +151,50 @@ public class TicketingServiceUnitTest {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
+    
+    try {
+      ticket.setUrl("http://mock_url/#/collective/");
+      this.ticketingService.create(ticket);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    
+    try {
+      ticket.setUrl("http://mock_url/#/cultivated/");
+      this.ticketingService.create(ticket);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    
+    try {
+      ticket.setUrl("http://mock_url/#/is/");
+      this.ticketingService.create(ticket);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    
+    try {
+      ticket.setUrl("http://mock_url/#/harvest/");
+      this.ticketingService.create(ticket);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    
+    try {
+      ticket.setUrl("http://mock_url/#/home/");
+      this.ticketingService.create(ticket);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    
+    
+    
+    
 
   }
 
