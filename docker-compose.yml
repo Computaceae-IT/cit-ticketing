@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  cit-ticketing:
+    build: .
+    environment:
+    - app.admin.mail=${MAIL}
+    - app.github.user=${USER_GITHUB}
+    - app.github.repository=${REPOSITORY_GITHUB}
+    - app.github.token=${TOKEN_GITHUB}
+    deploy:
+      replicas: 1
+      resources:
+        reservations:
+          memory: 128MB
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 5
+        window: 120s
