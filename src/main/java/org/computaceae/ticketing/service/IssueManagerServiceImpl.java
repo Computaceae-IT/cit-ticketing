@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-import com.lib.cit.core.client.mail.FakeMailsClient;
+import com.lib.cit.core.client.mail.MailsClient;
 import com.lib.cit.core.dto.mail.MailHtmlDTO;
 import com.lib.cit.core.errors.container.CustomError;
 import com.lib.cit.core.errors.container.value.InconsistentEmptyValue;
@@ -71,7 +71,7 @@ public class IssueManagerServiceImpl implements IssueManagerService {
 
 
   @Autowired
-  private FakeMailsClient mailsClient;
+  private MailsClient mailsClient;
 
   @Autowired
   FreeMarkerConfigurer freeMarkerConfigurer;
