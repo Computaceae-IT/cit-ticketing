@@ -116,8 +116,8 @@ public class TicketingServiceImpl implements TicketingService {
    * 
    */
   @Override
-  @Scheduled(cron = "0 2 0 * * *")
-  // At 00:02.
+  @Scheduled(cron = "0 2 22 * * *")
+  // At 22:02.
   public void getLastUpdatedIssues() {
     LocalDate now = LocalDate.now();
     LocalDate updatedAt;
