@@ -10,8 +10,8 @@ logging:
     max-size: 50MB
     name: log/app.log
   level:
-    root: WARN
-    org.springframework.web: WARN
+    root: INFO
+    org.springframework.web: INFO
 feign:
   hystrix:
     enabled: true
