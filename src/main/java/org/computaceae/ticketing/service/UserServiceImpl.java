@@ -3,6 +3,9 @@ package org.computaceae.ticketing.service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.stream.IntStream;
+import org.computaceae.ticketing.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,6 +81,18 @@ public class UserServiceImpl implements UserService {
       }
     }
 
+  }
+
+  // TODO
+  @Override
+  public UserDTO getUsers() {
+    UserDTO user = new UserDTO();
+    user.getManagers().putIfAbsent("sibadmin", defaultMail);
+
+    IntStream.rangeClosed(1, 8)
+        .forEach(i -> user.getUsers().putIfAbsent(UUID.randomUUID().toString(), defaultMail));
+
+    return user;
   }
 
 

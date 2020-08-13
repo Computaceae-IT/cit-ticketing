@@ -1,5 +1,7 @@
 version: '3.7'
 networks:
+  reverse_proxy_gateway:
+    external: true
   botalista-dev-bridge:
     external: true
 services:
@@ -7,6 +9,7 @@ services:
     image: registry.botalista-dev.ch/cit-ticketing:dev
     networks:
       - botalista-dev-bridge
+      - reverse_proxy_gateway
     environment:
     - app.admin.mail=cyril.boillat@ville-ge.ch
     - app.github.user=CJB-Geneve
@@ -22,6 +25,17 @@ services:
         delay: 10s
         max_attempts: 5
         window: 120s
+      labels:
+        traefik.backend: ${STACK_NAME}
+        traefik.port: 3335
+        traefik.frontend.redirect.entryPoint: https
+        traefik.frontend.rule: Host:cit-ticketing.botalista-dev.ch;
+        traefik.docker.network: reverse_proxy_gateway
+        traefik.frontend.passHostHeader: 'true'
+        traefik.frontend.whitelistSourceRange: 193.134.189.0/24, 193.134.187.0/24, 51.255.91.114
+    
+    
+    
 
     
     
