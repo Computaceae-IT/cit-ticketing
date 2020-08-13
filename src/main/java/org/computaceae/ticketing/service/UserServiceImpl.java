@@ -92,6 +92,9 @@ public class UserServiceImpl implements UserService {
     IntStream.rangeClosed(1, 8)
         .forEach(i -> user.getUsers().putIfAbsent(UUID.randomUUID().toString(), defaultMail));
 
+    user.getUsers().putIfAbsent("maire", defaultMail);
+    user.getUsers().putIfAbsent("paris", defaultMail);
+
     return user;
   }
 
