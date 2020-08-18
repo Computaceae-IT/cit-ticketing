@@ -1,5 +1,6 @@
 package org.computaceae.ticketing.unit;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.HashMap;
@@ -54,5 +55,27 @@ public class UserInternumControllerUnitTest {
           }
         })).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
   }
+
+  @Test
+  @SuppressWarnings("serial")
+  public void putManagersTest() throws Exception {
+
+    this.mockMvc.perform(put("/internum/user/manager/")
+        .content(mapper.writeValueAsString(new HashMap<String, String>() {
+          {
+            put("MOCK_USER1", "MOCK_USER1@MOCK.COM");
+            put("MOCK_USER2", "MOCK_USER2@MOCK.COM");
+            put("MOCK_USER3", "MOCK_USER3@MOCK.COM");
+          }
+        })).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+  }
+
+  @Test
+  public void getUsersTest() throws Exception {
+
+    this.mockMvc.perform(get("/internum/user/").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
 
 }
