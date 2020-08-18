@@ -45,18 +45,17 @@ public class UserInternumControllerImpl extends AbstractController {
   }
 
   /**
-   * put a couple username-email on volatile memory
+   * put a couple instance's name-email on volatile memory
    * 
-   * @param users mutiple couple username-email to added
+   * @param managers mutiple couple instance's name-email to added
    * @return a http status; 200 is Ok
    * 
    */
-  // TODO
-  // @PutMapping("/manager/")
-  // public @ResponseBody ResponseEntity<Void> putUsers(@RequestBody Map<String, String> users) {
-  // this.userService.addMailUser(users);
-  // return new ResponseEntity<>(HttpStatus.OK);
-  // }
+   @PutMapping("/manager/")
+   public @ResponseBody ResponseEntity<Void> putManagers(@RequestBody Map<String, String> managers) {
+   this.userService.addMailManager(managers);
+   return new ResponseEntity<>(HttpStatus.OK);
+   }
 
 
 

@@ -1,8 +1,11 @@
 package org.computaceae.ticketing.integration;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import org.computaceae.TestConfig;
+import org.computaceae.ticketing.dto.UserDTO;
 import org.computaceae.ticketing.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -114,6 +117,97 @@ public class UserServiceIntegrationTest {
     assertTrue(this.userService.getEmail("MOCK3"),
         this.userService.getEmail("MOCK3").equals("MOCK3 <" + this.defaultMail + ">"));
 
+  }
+
+  @Test
+  public void addMailManagerWithEmptyValueTest() {
+
+    try {
+      this.userService.addMailManager(null);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    try {
+      this.userService.addMailManager(new HashMap<String, String>());
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+
+    try {
+      this.userService.addMailManager(new HashMap<String, String>() {
+        private static final long serialVersionUID = 1L;
+        {
+          put(null, "MOCK");
+        }
+      });
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    try {
+      this.userService.addMailManager(new HashMap<String, String>() {
+        private static final long serialVersionUID = 1L;
+        {
+          put("MOCK", null);
+        }
+      });
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    UserDTO users = this.userService.getUsers();
+
+    assertNotNull(users);
+    assertNotNull(users.getManagers());
+    assertTrue(users.getManagers().isEmpty());
+
+  }
+
+  @Test
+  public void addMailManagerTest() {
+
+
+    try {
+      this.userService.addMailManager(new HashMap<String, String>() {
+        private static final long serialVersionUID = 1L;
+        {
+          put("MOCK1", "MOCK1@MOCK");
+        }
+      });
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    try {
+      this.userService.addMailManager(new HashMap<String, String>() {
+        private static final long serialVersionUID = 1L;
+        {
+          put("MOCK2", "MOCK2@MOCK");
+        }
+      });
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    UserDTO users = this.userService.getUsers();
+
+    assertNotNull(users);
+    assertNotNull(users.getManagers());
+    assertTrue(users.getManagers().toString(), users.getManagers().containsKey("MOCK1"));
+    assertTrue(users.getManagers().toString(), users.getManagers().containsKey("MOCK2"));
+    assertFalse(users.getManagers().toString(), users.getManagers().containsKey("MOCK3"));
+
+    assertTrue(users.getManagers().toString(),
+        users.getManagers().get("MOCK1").equals("MOCK1@MOCK"));
+    assertTrue(users.getManagers().toString(),
+        users.getManagers().get("MOCK2").equals("MOCK2@MOCK"));
   }
 
 

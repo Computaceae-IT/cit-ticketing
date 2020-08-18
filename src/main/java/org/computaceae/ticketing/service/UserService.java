@@ -9,6 +9,8 @@ public interface UserService {
 
   void addMailUser(Map<String, String> users);
 
+  void addMailManager(Map<String, String> managers);
+
   UserDTO getUsers();
 
 }

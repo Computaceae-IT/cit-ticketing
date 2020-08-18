@@ -3,8 +3,6 @@ package org.computaceae.ticketing.service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.stream.IntStream;
 import org.computaceae.ticketing.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +26,7 @@ public class UserServiceImpl implements UserService {
   private static Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
   private final Map<String, String> mailUsers = new HashMap<String, String>();
+  private final Map<String, String> mailManagers = new HashMap<String, String>();
 
   private String defaultMail;
 
@@ -80,23 +79,37 @@ public class UserServiceImpl implements UserService {
         this.mailUsers.put(entry.getKey(), entry.getValue());
       }
     }
-
   }
 
-  // TODO
+  /**
+   * store on static variable couple instance's name-email
+   * 
+   * @param managers couple's map instance's name-email
+   */
+  @Override
+  public void addMailManager(Map<String, String> managers) {
+    if (managers == null)
+      return;
+    for (Entry<String, String> entry : managers.entrySet()) {
+      if (!StringUtils.isEmpty(entry.getValue()) && !StringUtils.isEmpty(entry.getKey())) {
+        this.mailManagers.put(entry.getKey(), entry.getValue());
+      }
+    }
+  }
+
+  /**
+   * get user dto with all stored email
+   * 
+   * @return a user dto
+   */
   @Override
   public UserDTO getUsers() {
     UserDTO user = new UserDTO();
-    user.getManagers().putIfAbsent("sibadmin", defaultMail);
 
-    IntStream.rangeClosed(1, 8)
-        .forEach(i -> user.getUsers().putIfAbsent(UUID.randomUUID().toString(), defaultMail));
-
-    user.getUsers().putIfAbsent("maire", defaultMail);
-    user.getUsers().putIfAbsent("paris", defaultMail);
+    this.mailManagers.forEach((k, v) -> user.getManagers().putIfAbsent(k, v));
+    this.mailUsers.forEach((k, v) -> user.getUsers().putIfAbsent(k, v));
 
     return user;
   }
-
 
 }
