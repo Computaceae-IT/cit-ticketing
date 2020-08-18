@@ -119,6 +119,7 @@ public class TicketingServiceImpl implements TicketingService {
   @Scheduled(cron = "0 2 0 * * *")
   // At 00:02.
   public void getLastUpdatedIssues() {
+    log.info("Started getLastUpdatedIssues function");
     LocalDate now = LocalDate.now();
     LocalDate updatedAt;
     Period period;
@@ -128,7 +129,9 @@ public class TicketingServiceImpl implements TicketingService {
           && !issue.getUpdatedAt().equals(issue.getCreatedAt())) {
         updatedAt = LocalDateUtils.convertToLocalDate(issue.getUpdatedAt());
         period = Period.between(now, updatedAt);
-        if (period.getDays() == 1) {
+        log.info("period " + period + "(" + period.getDays() + ") for issue " + issue.getTitle()
+            + "(" + issue.getId() + ")");
+        if (period.getDays() == -1) {
           this.issueManagerService
               .sendUpdateIssueMail(this.userService.getEmail(this.getUsername(issue)), issue);
         }
