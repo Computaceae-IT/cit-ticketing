@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
   /**
    * store on static variable couple instance's name-email
    * 
-   * @param users couple's map instance's name-email
+   * @param managers couple's map instance's name-email
    */
   @Override
   public void addMailManager(Map<String, String> managers) {

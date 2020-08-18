@@ -47,7 +47,7 @@ public class UserInternumControllerImpl extends AbstractController {
   /**
    * put a couple instance's name-email on volatile memory
    * 
-   * @param users mutiple couple instance's name-email to added
+   * @param managers mutiple couple instance's name-email to added
    * @return a http status; 200 is Ok
    * 
    */
