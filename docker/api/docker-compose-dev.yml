@@ -1,6 +1,6 @@
 version: '3.7'
 networks:
-  reverse_proxy_gateway:
+  reverse_proxy_bota_dev_gateway:
     external: true
   botalista-dev-bridge:
     external: true
@@ -9,7 +9,7 @@ services:
     image: registry.botalista-dev.ch/cit-ticketing:dev
     networks:
       - botalista-dev-bridge
-      - reverse_proxy_gateway
+      - reverse_proxy_bota_dev_gateway
     environment:
     - app.admin.mail=cyril.boillat@ville-ge.ch
     - app.github.user=CJB-Geneve
