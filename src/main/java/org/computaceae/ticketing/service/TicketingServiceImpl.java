@@ -97,7 +97,7 @@ public class TicketingServiceImpl implements TicketingService {
     try {
       this.labels.addAll(this.labelService.getLabels(this.user, this.repository));
     } catch (Exception e) {
-      log.warn(e.getMessage());
+      log.error(e.getMessage());
     }
 
 
