@@ -70,6 +70,7 @@ node {
 						sh """\
 						STACK_NAME=MSM_CIT-TICKETING_PRD \
 					    BRANCH=${env.BRANCH_NAME} \
+					    TOKEN_GITHUB=${TOKEN_GITHUB}
 						DOCKER_HOST=tcp://172.16.0.1:3272 \
 						docker stack deploy MSM_CIT_TICKETING_PRD --compose-file docker/api/docker-compose-production.yml --resolve-image always --prune"""
 					}
