@@ -4,14 +4,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
 import org.computaceae.TestConfig;
 import org.computaceae.ticketing.service.IssueManagerService;
 import org.eclipse.egit.github.core.Issue;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
@@ -25,6 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import com.lib.cit.core.client.mail.FakeMailsClient;
 import com.lib.cit.core.client.mail.MailsClient;
 import com.lib.cit.core.dto.mail.MailHtmlDTO;
@@ -33,7 +35,6 @@ import com.lib.cit.core.dto.mail.MailHtmlDTO;
 @Import(TestConfig.class)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-@Ignore // TODO remove that
 public class IssueManagerServiceIntegrationTest {
 
   private static Logger log = LoggerFactory.getLogger(IssueManagerServiceIntegrationTest.class);
@@ -193,6 +194,69 @@ public class IssueManagerServiceIntegrationTest {
       throw new AssertionError(e);
     }
   }
+  
+  @Test
+  public void sendCloseMailWithEmptyValueTest() {
+    try {
+      Future<Boolean> resultFuture = this.issueManagerService.sendCloseIssueMail(null, null);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    Issue issue = new Issue();
+
+    try {
+      Future<Boolean> resultFuture = this.issueManagerService.sendCloseIssueMail(null, issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendCloseIssueMail("mail@mail.com", issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    issue.setId(123l);
+
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendCloseIssueMail("mail@mail.com", issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    issue.setBody("MOCK_BODY");
+
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendCloseIssueMail("mail@mail.com", issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+
+    issue.setHtmlUrl("MOCK_HTMLURL");
+
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendCloseIssueMail("mail@mail.com", issue);
+      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+  }
 
   @Test
   public void sendCreationIssueMailTest() {
@@ -214,6 +278,20 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendUpdateIssueMail("ci@mock.mail", issue);
+      assertTrue(resultFuture.get(10, TimeUnit.SECONDS));
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    
+  }
+  
+  @Test
+  public void sendCloseIssueMailTest() {
+
+    try {
+      Future<Boolean> resultFuture =
+          this.issueManagerService.sendCloseIssueMail("ci@mock.mail", issue);
       assertTrue(resultFuture.get(10, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);

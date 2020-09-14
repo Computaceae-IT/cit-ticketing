@@ -66,6 +66,17 @@ public class IssueManagerServiceImpl implements IssueManagerService {
       new AbstractMap.SimpleEntry<>("de",
           "Ein Support-Ticket wurde aktualisiert. Klicken Sie auf den folgenden Link, um den Fortschritt zu verfolgen"))
       .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+  
+  private static final String CLOSE_ISSUE_MAIL_CONCERN = "Le ticket a été traité / The issue has been processed / Das Problem wurde bearbeitet";
+  private static final Map<String, String> CLOSE_ISSUE_TEXT_MAP = Stream.of(
+      new AbstractMap.SimpleEntry<>("fr",
+          "Un ticket de support a été traité, si le problème devrait persister, merci de cliquer sur le lien ci-dessous pour le ré-ouvrir"),
+      new AbstractMap.SimpleEntry<>("en",
+          "A support ticket has been processed, if the problem should persist please click on the link below to re-open it"),
+      new AbstractMap.SimpleEntry<>("de",
+          "Ein Support-Ticket wurde verarbeitet. Sollte das Problem weiterhin bestehen, klicken Sie auf den folgenden Link, um es erneut zu öffnen"))
+      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
 
   private static final String ISSUE_TEMPLATE = "issue.ftlh";
 
@@ -128,6 +139,35 @@ public class IssueManagerServiceImpl implements IssueManagerService {
       this.mailsClient.send(mail);
 
       log.info("sendUpdateIssueMail TO : " + mailTo);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      return new AsyncResult<Boolean>(false);
+    }
+
+    return new AsyncResult<Boolean>(true);
+  }
+  
+  /**
+   * Send a notification when a issue is closed
+   * 
+   * @param mailTo Destination email address
+   * @param issue closed issue
+   * @return a boolean future. if true, the mail is sanded
+   * 
+   */
+  @Async
+  @Override
+  public Future<Boolean> sendCloseIssueMail(String mailTo, Issue issue) {
+    try {
+      this.manageErrors(mailTo, issue);
+
+      MailHtmlDTO mail = new MailHtmlDTO();
+      mail.setTo(mailTo);
+      mail.setConcern(CLOSE_ISSUE_MAIL_CONCERN);
+      mail.setHtml(this.getHtmlBody(issue, CLOSE_ISSUE_MAIL_CONCERN, CLOSE_ISSUE_TEXT_MAP));
+      this.mailsClient.send(mail);
+
+      log.info("sendCloseIssueMail TO : " + mailTo);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       return new AsyncResult<Boolean>(false);
