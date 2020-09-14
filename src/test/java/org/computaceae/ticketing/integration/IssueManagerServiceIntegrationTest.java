@@ -73,7 +73,7 @@ public class IssueManagerServiceIntegrationTest {
   public void sendUpdateMailWithEmptyValueTest() {
     try {
       Future<Boolean> resultFuture = this.issueManagerService.sendUpdateIssueMail(null, null);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -83,7 +83,7 @@ public class IssueManagerServiceIntegrationTest {
 
     try {
       Future<Boolean> resultFuture = this.issueManagerService.sendUpdateIssueMail(null, issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -92,7 +92,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendUpdateIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -103,7 +103,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendUpdateIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -114,7 +114,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendUpdateIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -125,7 +125,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendUpdateIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -136,7 +136,7 @@ public class IssueManagerServiceIntegrationTest {
   public void sendCreationMailWithEmptyValueTest() {
     try {
       Future<Boolean> resultFuture = this.issueManagerService.sendCreationIssueMail(null, null);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -146,7 +146,7 @@ public class IssueManagerServiceIntegrationTest {
 
     try {
       Future<Boolean> resultFuture = this.issueManagerService.sendCreationIssueMail(null, issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -155,7 +155,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCreationIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -166,7 +166,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCreationIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -177,7 +177,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCreationIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -188,7 +188,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCreationIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -199,7 +199,7 @@ public class IssueManagerServiceIntegrationTest {
   public void sendCloseMailWithEmptyValueTest() {
     try {
       Future<Boolean> resultFuture = this.issueManagerService.sendCloseIssueMail(null, null);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -209,7 +209,7 @@ public class IssueManagerServiceIntegrationTest {
 
     try {
       Future<Boolean> resultFuture = this.issueManagerService.sendCloseIssueMail(null, issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -218,7 +218,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCloseIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -229,7 +229,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCloseIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -240,7 +240,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCloseIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -251,7 +251,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCloseIssueMail("mail@mail.com", issue);
-      assertFalse(resultFuture.get(5, TimeUnit.SECONDS));
+      assertFalse(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -264,7 +264,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCreationIssueMail("ci@mock.mail", issue);
-      assertTrue(resultFuture.get(10, TimeUnit.SECONDS));
+      assertTrue(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -278,7 +278,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendUpdateIssueMail("ci@mock.mail", issue);
-      assertTrue(resultFuture.get(10, TimeUnit.SECONDS));
+      assertTrue(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
@@ -292,7 +292,7 @@ public class IssueManagerServiceIntegrationTest {
     try {
       Future<Boolean> resultFuture =
           this.issueManagerService.sendCloseIssueMail("ci@mock.mail", issue);
-      assertTrue(resultFuture.get(10, TimeUnit.SECONDS));
+      assertTrue(resultFuture.get(30, TimeUnit.SECONDS));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
