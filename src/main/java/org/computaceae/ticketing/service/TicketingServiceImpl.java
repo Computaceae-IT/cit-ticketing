@@ -114,7 +114,7 @@ public class TicketingServiceImpl implements TicketingService {
 	 * 
 	 */
 	@Override
-	@Scheduled(fixedDelay = 1000)
+	@Scheduled(cron = "0 2 0 * * *")
 	// At 00:02.
 	public void getLastUpdatedIssues() {
 		log.info("Started getLastUpdatedIssues function");
