@@ -10,9 +10,9 @@ logging:
     max-size: 50MB
     name: log/app.log
   level:
-    root: INFO
+    root: WARN
     org:
-      springframework.web: INFO
+      springframework.web: WARN
 #      computaceae: DEBUG
 #      lib:
 #        botalista: DEBUG
