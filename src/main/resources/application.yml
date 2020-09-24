@@ -11,7 +11,12 @@ logging:
     name: log/app.log
   level:
     root: INFO
-    org.springframework.web: INFO
+    org:
+      springframework.web: INFO
+#      computaceae: DEBUG
+#      lib:
+#        botalista: DEBUG
+#        cit: DEBUG
 feign:
   hystrix:
     enabled: true

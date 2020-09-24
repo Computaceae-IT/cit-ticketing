@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-import com.lib.cit.core.client.mail.MailsClient;
+import com.lib.cit.core.client.mail.FakeMailsClient;
 import com.lib.cit.core.dto.mail.MailHtmlDTO;
 import com.lib.cit.core.errors.container.CustomError;
 import com.lib.cit.core.errors.container.value.InconsistentEmptyValue;
@@ -66,8 +66,9 @@ public class IssueManagerServiceImpl implements IssueManagerService {
       new AbstractMap.SimpleEntry<>("de",
           "Ein Support-Ticket wurde aktualisiert. Klicken Sie auf den folgenden Link, um den Fortschritt zu verfolgen"))
       .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-  
-  private static final String CLOSE_ISSUE_MAIL_CONCERN = "Le ticket a été traité / The issue has been processed / Das Problem wurde bearbeitet";
+
+  private static final String CLOSE_ISSUE_MAIL_CONCERN =
+      "Le ticket a été traité / The issue has been processed / Das Problem wurde bearbeitet";
   private static final Map<String, String> CLOSE_ISSUE_TEXT_MAP = Stream.of(
       new AbstractMap.SimpleEntry<>("fr",
           "Un ticket de support a été traité, si le problème devrait persister, merci de cliquer sur le lien ci-dessous pour le ré-ouvrir"),
@@ -82,7 +83,7 @@ public class IssueManagerServiceImpl implements IssueManagerService {
 
 
   @Autowired
-  private MailsClient mailsClient;
+  private FakeMailsClient mailsClient;
 
   @Autowired
   FreeMarkerConfigurer freeMarkerConfigurer;
@@ -146,7 +147,7 @@ public class IssueManagerServiceImpl implements IssueManagerService {
 
     return new AsyncResult<Boolean>(true);
   }
-  
+
   /**
    * Send a notification when a issue is closed
    * 
