@@ -179,10 +179,12 @@ public class IssueManagerServiceImpl implements IssueManagerService {
 
   private void manageErrors(String mailTo, Issue issue) {
     List<CustomError> errors = new ArrayList<>();
-    if (StringUtils.isEmpty(mailTo))
+    if (StringUtils.isEmpty(mailTo)) {
       errors.add(new InconsistentEmptyValue(Type.object, "mailTo"));
-    if (issue == null)
+    }
+    if (issue == null) {
       errors.add(new InconsistentEmptyValue(Type.object, "issue"));
+    }
     if (issue != null) {
       if (issue.getId() <= 0) {
         errors.add(new InconsistentPositiveValue("issue.id", issue.getId()));
@@ -199,8 +201,9 @@ public class IssueManagerServiceImpl implements IssueManagerService {
 
     }
 
-    if (!errors.isEmpty())
+    if (!errors.isEmpty()) {
       throw new LogicalBusinessException(errors);
+    }
   }
 
   private String getHtmlBody(Issue issue, String title, Map<String, String> text) {

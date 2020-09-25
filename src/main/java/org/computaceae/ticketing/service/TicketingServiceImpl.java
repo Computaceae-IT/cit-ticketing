@@ -49,6 +49,8 @@ public class TicketingServiceImpl implements TicketingService {
 
   private IssueService issueService;
   private LabelService labelService;
+  
+  private Pattern usernamePattern = Pattern.compile("(Username : .*)");
 
   final static List<String> OFFICIAL_LABEL_NAMES = Arrays.asList("bug", "missing blocking feature",
       "missing feature", "enhancement", "optional enhancement", "question");
@@ -79,12 +81,15 @@ public class TicketingServiceImpl implements TicketingService {
   public TicketingServiceImpl(@Value("${app.github.token}") String token,
       @Value("${app.github.user}") String user,
       @Value("${app.github.repository}") String repository) {
-    if (StringUtils.isEmpty(token))
+    if (StringUtils.isEmpty(token)) {
       throw new IllegalArgumentException("Token is empty");
-    if (StringUtils.isEmpty(user))
+    }
+    if (StringUtils.isEmpty(user)) {
       throw new IllegalArgumentException("User is empty");
-    if (StringUtils.isEmpty(repository))
+    }
+    if (StringUtils.isEmpty(repository)) {
       throw new IllegalArgumentException("Repository is empty");
+    }
 
     GitHubClient client = new GitHubClient();
     client.setOAuth2Token(token);
@@ -131,9 +136,10 @@ public class TicketingServiceImpl implements TicketingService {
             + ",d:" + period.getDays() + ") for issue " + issue.getTitle() + "(" + issue.getId()
             + ")");
 
-        if (period.getYears() == 0 && period.getMonths() == 0 && period.getDays() == -1)
+        if (period.getYears() == 0 && period.getMonths() == 0 && period.getDays() == -1) {
           this.issueManagerService
               .sendCloseIssueMail(this.userService.getEmail(this.getUsername(issue)), issue);
+        }
       } else if (issue != null && issue.getUpdatedAt() != null && issue.getCreatedAt() != null
           && TimeUnit.SECONDS.convert(
               Math.abs(issue.getUpdatedAt().getTime() - issue.getCreatedAt().getTime()),
@@ -149,9 +155,10 @@ public class TicketingServiceImpl implements TicketingService {
             + ",d:" + period.getDays() + ") for issue " + issue.getTitle() + "(" + issue.getId()
             + ")");
 
-        if (period.getYears() == 0 && period.getMonths() == 0 && period.getDays() == -1)
+        if (period.getYears() == 0 && period.getMonths() == 0 && period.getDays() == -1) {
           this.issueManagerService
               .sendUpdateIssueMail(this.userService.getEmail(this.getUsername(issue)), issue);
+        }
       }
     }
   }
@@ -175,10 +182,12 @@ public class TicketingServiceImpl implements TicketingService {
     Comparator<Label> compareByPriority = new Comparator<Label>() {
       @Override
       public int compare(Label o1, Label o2) {
-        if (o1 == null)
+        if (o1 == null) {
           return 1;
-        if (o2 == null)
+        }
+        if (o2 == null) {
           return -1;
+        }
         int o1Index = OFFICIAL_LABEL_NAMES.indexOf(o1.getName());
         int o2Index = OFFICIAL_LABEL_NAMES.indexOf(o2.getName());
         return Integer.compare(o1Index, o2Index);
@@ -203,9 +212,10 @@ public class TicketingServiceImpl implements TicketingService {
     try {
       issue = this.issueService.createIssue(this.user, this.repository, issue);
       ticket.setHtmlUrl(issue.getHtmlUrl());
-      if (!StringUtils.isEmpty(ticket.getError()))
+      if (!StringUtils.isEmpty(ticket.getError())) {
         this.issueService.createComment(this.user, this.repository, issue.getNumber(),
             ticket.getError());
+      }
 
       this.issueManagerService
           .sendCreationIssueMail(this.userService.getEmail(this.getUsername(issue)), issue);
@@ -232,20 +242,27 @@ public class TicketingServiceImpl implements TicketingService {
       case "home":
         return "S.L";
       default:
-        if (module.length() > 4)
+        if (module.length() > 4) {
           return module.substring(0, 3).toUpperCase();
-        else
+        } else {
           return module;
+        }
     }
   }
 
   private String getUsername(Issue issue) {
-    if (issue == null || StringUtils.isEmpty(issue.getBody())
-        || issue.getBody().split("\\n").length < 2
-        || issue.getBody().split("\\n")[1].length() < 11) {
+    if (issue == null || StringUtils.isEmpty(issue.getBody())) {
       return null;
     }
-    return issue.getBody().split("\\n")[1].substring(11);
+
+    Matcher matcher = this.usernamePattern.matcher(issue.getBody());
+
+    if (matcher.find() && !StringUtils.isEmpty(matcher.group(1))
+        && matcher.group(1).length() > 11) {
+      log.debug("Username : " + matcher.group(1).substring(11).trim());
+      return matcher.group(1).substring(11).trim();
+    }
+    return null;
   }
 
   private List<Issue> getAllIssues() {
@@ -274,8 +291,9 @@ public class TicketingServiceImpl implements TicketingService {
   }
 
   private Issue constructIssue(TicketDTO ticket) {
-    if (ticket == null)
+    if (ticket == null) {
       throw new IllegalArgumentException("ticket is empty");
+    }
 
     List<CustomError> errors = new ArrayList<>();
 
@@ -291,8 +309,9 @@ public class TicketingServiceImpl implements TicketingService {
       errors.add(new InconsistentEmptyValue(Type.property, "ticket.url"));
     }
 
-    if (!errors.isEmpty())
+    if (!errors.isEmpty()) {
       throw new LogicalBusinessException(errors);
+    }
 
     Issue issue = new Issue();
 
@@ -337,17 +356,21 @@ public class TicketingServiceImpl implements TicketingService {
   }
 
   private List<Label> getLabels(TicketDTO ticket) {
-    if (ticket == null)
+    if (ticket == null) {
       throw new IllegalArgumentException("ticket is empty");
-    if (StringUtils.isEmpty(ticket.getLabel()))
+    }
+    if (StringUtils.isEmpty(ticket.getLabel())) {
       throw new IllegalArgumentException("ticket.label is empty");
-    if (StringUtils.isEmpty(ticket.getUrl()))
+    }
+    if (StringUtils.isEmpty(ticket.getUrl())) {
       throw new IllegalArgumentException("ticket.url is empty");
+    }
 
     List<Label> labels = new ArrayList<>();
     for (Label label : this.labels) {
-      if (ticket.getLabel().equals(label.getName()))
+      if (ticket.getLabel().equals(label.getName())) {
         labels.add(label);
+      }
     }
     if (labels.isEmpty()) {
       throw new LogicalBusinessException(new InconsistentEmptyValue(Type.property, "ticket.label"));
