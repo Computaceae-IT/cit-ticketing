@@ -18,6 +18,8 @@ networks:
     external: true
   bota_ncy_prd_gateway:
     external: true
+  bota_bord_prd_gateway:
+    external: true
 services:
   cit-ticketing:
     image: registry.botalista-dev.ch/cit-ticketing:latest
@@ -31,6 +33,7 @@ services:
     - bota_wfo_prd_gateway
     - bota_msm_gateway
     - bota_ncy_prd_gateway
+    - bota_bord_prd_gateway
     environment:
     - app.admin.mail=cyril.boillat@ville-ge.ch
     - app.github.user=CJB-Geneve
