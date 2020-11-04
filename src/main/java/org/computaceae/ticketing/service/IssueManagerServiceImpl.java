@@ -211,7 +211,7 @@ public class IssueManagerServiceImpl implements IssueManagerService {
     data.put("mainTitle", title);
     data.put("text", text);
 
-    data.put("id", issue.getId());
+    data.put("id", issue.getNumber());
     data.put("title", issue.getTitle());
 
     List<String> contents = new ArrayList<String>();
