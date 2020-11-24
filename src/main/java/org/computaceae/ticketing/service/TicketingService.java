@@ -1,8 +1,8 @@
 package org.computaceae.ticketing.service;
 
 import java.util.List;
+import org.computaceae.lib.core.dto.ticketing.TicketDTO;
 import org.eclipse.egit.github.core.Label;
-import com.lib.cit.core.dto.ticketing.TicketDTO;
 
 public interface TicketingService {
 

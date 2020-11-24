@@ -4,7 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.HashMap;
-import org.computaceae.TestConfig;
+import org.computaceae.ticketing.TestConfig;
 import org.computaceae.ticketing.service.TicketingService;
 import org.computaceae.ticketing.service.UserService;
 import org.junit.Test;

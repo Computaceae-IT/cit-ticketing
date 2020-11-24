@@ -14,6 +14,12 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.computaceae.lib.core.dto.ticketing.TicketDTO;
+import org.computaceae.lib.core.errors.container.CustomError;
+import org.computaceae.lib.core.errors.container.value.InconsistentEmptyValue;
+import org.computaceae.lib.core.errors.container.value.InconsistentEmptyValue.Type;
+import org.computaceae.lib.core.errors.exception.LogicalBusinessException;
+import org.computaceae.lib.core.utils.LocalDateUtils;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -26,12 +32,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import com.lib.cit.core.dto.ticketing.TicketDTO;
-import com.lib.cit.core.errors.container.CustomError;
-import com.lib.cit.core.errors.container.value.InconsistentEmptyValue;
-import com.lib.cit.core.errors.container.value.InconsistentEmptyValue.Type;
-import com.lib.cit.core.errors.exception.LogicalBusinessException;
-import com.lib.cit.core.utils.LocalDateUtils;
 
 /**
  * <b>TicketingServiceImpl</b>
@@ -49,7 +49,7 @@ public class TicketingServiceImpl implements TicketingService {
 
   private IssueService issueService;
   private LabelService labelService;
-  
+
   private Pattern usernamePattern = Pattern.compile("(Username : .*)");
 
   final static List<String> OFFICIAL_LABEL_NAMES = Arrays.asList("bug", "missing blocking feature",

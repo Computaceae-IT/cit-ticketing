@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.computaceae.TestConfig;
+import org.computaceae.lib.core.client.mail.FakeMailsClient;
+import org.computaceae.lib.core.client.mail.MailsClient;
+import org.computaceae.lib.core.dto.mail.MailHtmlDTO;
+import org.computaceae.lib.core.dto.ticketing.TicketDTO;
+import org.computaceae.ticketing.TestConfig;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.service.IssueService;
@@ -30,10 +34,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.lib.cit.core.client.mail.FakeMailsClient;
-import com.lib.cit.core.client.mail.MailsClient;
-import com.lib.cit.core.dto.mail.MailHtmlDTO;
-import com.lib.cit.core.dto.ticketing.TicketDTO;
 
 @ActiveProfiles("test")
 @Import(TestConfig.class)

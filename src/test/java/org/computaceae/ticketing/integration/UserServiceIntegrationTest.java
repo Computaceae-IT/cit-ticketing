@@ -4,7 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
-import org.computaceae.TestConfig;
+import org.computaceae.ticketing.TestConfig;
 import org.computaceae.ticketing.dto.UserDTO;
 import org.computaceae.ticketing.service.UserService;
 import org.junit.Test;

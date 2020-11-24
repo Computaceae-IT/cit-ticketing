@@ -1,6 +1,7 @@
 package org.computaceae.ticketing.controller;
 
 import java.util.Map;
+import org.computaceae.lib.core.controller.AbstractController;
 import org.computaceae.ticketing.dto.UserDTO;
 import org.computaceae.ticketing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.lib.cit.core.controller.AbstractController;
 
 /**
  * <b>UserInternumControllerImpl</b>

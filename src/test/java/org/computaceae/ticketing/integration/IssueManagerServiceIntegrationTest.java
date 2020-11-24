@@ -4,12 +4,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-
-import org.computaceae.TestConfig;
+import org.computaceae.lib.core.client.mail.FakeMailsClient;
+import org.computaceae.lib.core.client.mail.MailsClient;
+import org.computaceae.lib.core.dto.mail.MailHtmlDTO;
+import org.computaceae.ticketing.TestConfig;
 import org.computaceae.ticketing.service.IssueManagerService;
 import org.eclipse.egit.github.core.Issue;
 import org.junit.Before;
@@ -26,10 +27,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.lib.cit.core.client.mail.FakeMailsClient;
-import com.lib.cit.core.client.mail.MailsClient;
-import com.lib.cit.core.dto.mail.MailHtmlDTO;
 
 @ActiveProfiles("test")
 @Import(TestConfig.class)
@@ -194,7 +191,7 @@ public class IssueManagerServiceIntegrationTest {
       throw new AssertionError(e);
     }
   }
-  
+
   @Test
   public void sendCloseMailWithEmptyValueTest() {
     try {
@@ -269,9 +266,9 @@ public class IssueManagerServiceIntegrationTest {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
   }
-  
+
   @Test
   public void sendUpdateIssueMailTest() {
 
@@ -283,9 +280,9 @@ public class IssueManagerServiceIntegrationTest {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
   }
-  
+
   @Test
   public void sendCloseIssueMailTest() {
 
@@ -297,7 +294,7 @@ public class IssueManagerServiceIntegrationTest {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
   }
 
 }

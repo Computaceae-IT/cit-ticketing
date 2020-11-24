@@ -6,7 +6,7 @@
 
 	<groupId>org.computaceae</groupId>
 	<artifactId>cit-ticketing</artifactId>
-	<version>0.0.4</version>
+	<version>0.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>cit-ticketing</name>
@@ -21,7 +21,7 @@
 
 	<properties>
 		<!-- Computaceae-IT -->
-		<cit-lib-cloud-version>0.0.3</cit-lib-cloud-version>
+		<cit-lib-cloud-version>0.1.0</cit-lib-cloud-version>
 	</properties>
 
 
