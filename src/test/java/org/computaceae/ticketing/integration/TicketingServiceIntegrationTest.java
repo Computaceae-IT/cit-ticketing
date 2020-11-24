@@ -13,7 +13,7 @@ import org.computaceae.lib.core.dto.mail.MailHtmlDTO;
 import org.computaceae.lib.core.dto.ticketing.TicketDTO;
 import org.computaceae.lib.core.errors.container.value.InconsistentEmptyValue;
 import org.computaceae.lib.core.errors.exception.LogicalBusinessException;
-import org.computaceae.ticketing.TestConfig;
+import org.computaceae.ticketing.ExtraConfig;
 import org.computaceae.ticketing.service.TicketingService;
 import org.computaceae.ticketing.service.TicketingServiceImpl;
 import org.eclipse.egit.github.core.Label;
@@ -33,7 +33,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @ActiveProfiles("test")
-@Import(TestConfig.class)
+@Import(ExtraConfig.class)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class TicketingServiceIntegrationTest {

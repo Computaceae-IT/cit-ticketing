@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.computaceae.lib.core.client.mail.FakeMailsClient;
 import org.computaceae.lib.core.client.mail.MailsClient;
 import org.computaceae.lib.core.dto.mail.MailHtmlDTO;
-import org.computaceae.ticketing.TestConfig;
+import org.computaceae.ticketing.ExtraConfig;
 import org.computaceae.ticketing.service.IssueManagerService;
 import org.eclipse.egit.github.core.Issue;
 import org.junit.Before;
@@ -29,7 +29,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @ActiveProfiles("test")
-@Import(TestConfig.class)
+@Import(ExtraConfig.class)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class IssueManagerServiceIntegrationTest {
