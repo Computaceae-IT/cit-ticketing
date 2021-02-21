@@ -1,6 +1,8 @@
 package org.computaceae.ticketing.controller;
 
 import java.util.List;
+import org.computaceae.lib.core.controller.AbstractController;
+import org.computaceae.lib.core.dto.ticketing.TicketDTO;
 import org.computaceae.ticketing.service.TicketingService;
 import org.eclipse.egit.github.core.Label;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.lib.cit.core.controller.AbstractController;
-import com.lib.cit.core.dto.ticketing.TicketDTO;
 
 /**
  * <b>TicketingControllerImpl</b>

@@ -1,4 +1,4 @@
-package org.computaceae;
+package org.computaceae.ticketing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableAsync
 @EnableScheduling
-@EnableFeignClients(value = {"com.lib.cit.core"})
-@SpringBootApplication(scanBasePackages = {"org.computaceae", "com.lib.cit.core"})
+@EnableFeignClients(value = {"org.computaceae.lib.core"})
+@SpringBootApplication(scanBasePackages = {"org.computaceae.ticketing", "org.computaceae.lib"})
 public class CitTicketingApplication {
 
   public static void main(String[] args) {

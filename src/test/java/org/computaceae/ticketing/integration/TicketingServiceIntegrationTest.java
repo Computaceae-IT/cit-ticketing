@@ -7,7 +7,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Map;
-import org.computaceae.TestConfig;
+import org.computaceae.lib.core.client.mail.FakeMailsClient;
+import org.computaceae.lib.core.client.mail.MailsClient;
+import org.computaceae.lib.core.dto.mail.MailHtmlDTO;
+import org.computaceae.lib.core.dto.ticketing.TicketDTO;
+import org.computaceae.lib.core.errors.container.value.InconsistentEmptyValue;
+import org.computaceae.lib.core.errors.exception.LogicalBusinessException;
+import org.computaceae.ticketing.ExtraConfig;
 import org.computaceae.ticketing.service.TicketingService;
 import org.computaceae.ticketing.service.TicketingServiceImpl;
 import org.eclipse.egit.github.core.Label;
@@ -25,15 +31,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.lib.cit.core.client.mail.FakeMailsClient;
-import com.lib.cit.core.client.mail.MailsClient;
-import com.lib.cit.core.dto.mail.MailHtmlDTO;
-import com.lib.cit.core.dto.ticketing.TicketDTO;
-import com.lib.cit.core.errors.container.value.InconsistentEmptyValue;
-import com.lib.cit.core.errors.exception.LogicalBusinessException;
 
 @ActiveProfiles("test")
-@Import(TestConfig.class)
+@Import(ExtraConfig.class)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class TicketingServiceIntegrationTest {
@@ -187,7 +187,7 @@ public class TicketingServiceIntegrationTest {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
     try {
       t = new TicketingServiceImpl("MOCK", "MOCK", "");
       throw new AssertionError("No IllegalArgumentException raised for create with null object");
@@ -198,7 +198,7 @@ public class TicketingServiceIntegrationTest {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-    
+
     t = new TicketingServiceImpl("MOCK", "MOCK", "MOCK");
     assertNotNull(t.getLabels());
     assertTrue(t.getLabels().toString(), t.getLabels().isEmpty());
