@@ -26,7 +26,7 @@ spec:
         image: registry.computaceae-it.tech/cit-ticketing
         imagePullPolicy: Always
         env:
-          - name: APP_TOKEN_GITHUB
+          - name: APP_GITHUB_TOKEN
             valueFrom:
               secretKeyRef:
                 name: ticketing-token
