@@ -36,7 +36,7 @@ public class WebSecurityConfig extends AbstractWebSecurityConfig {
           + "hasIpAddress('135.125.0.55') or "
           + "hasIpAddress('146.59.253.176') or "
           + "hasIpAddress('135.125.8.62') or "
-          + "hasIpAddress('146.59.149.163') or"
+          + "hasIpAddress('146.59.149.163') or "
           + "hasIpAddress('51.255.91.114')")
     .anyRequest().authenticated();
 
