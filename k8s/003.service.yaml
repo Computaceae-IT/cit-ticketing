@@ -47,8 +47,6 @@ spec:
     - name: ticketing
       port: 3335
     middlewares:
-      - name: ipwhitelist
-        namespace: traefik
       - name: ipwhitelist-legacy
         namespace: traefik
   tls:
