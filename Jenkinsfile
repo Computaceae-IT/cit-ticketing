@@ -38,7 +38,7 @@ node {
 				JAVA_ENV = "-e app.github.token=${TOKEN_GITHUB} -e app.github.user=Computaceae-IT -e app.github.repository=cit-ticketing -e app.admin.mail=test@mail.com"
 			}
 			docker.image('maven:3.5.2-jdk-8-alpine').inside("-v maven-repo:/root/.m2 ${JAVA_ENV}") {
-				sh 'mvn -Duser.timezone=Europe/Zurich clean install'
+				sh 'mvn -Duser.timezone=Europe/Zurich -U clean install'
 
 			}
 		}
