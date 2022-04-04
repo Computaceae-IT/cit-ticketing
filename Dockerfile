@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-alpine
 
-LABEL maintainer="SiropOps <Cyril.Boillat@ville-ge.ch>"
+LABEL maintainer="SiropOps <cyril@botalista.community>"
 
 ENV TZ=Europe/Zurich
 

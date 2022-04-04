@@ -102,7 +102,7 @@ function displayIssues(issues){
             }
 
         // TODO reactivate link
-        //groupStr = groupStr + table +  '\n\r And ' + groups[index].numberOldTickets + ' old issue, to see them follow this [link](https://github.com/CJB-Geneve/com-botalista-backend/issues?utf8=✓&q=is%3Aissue+is%3Aclosed+in%3Atitle+%25Error+on+label%3A'+ replaceAll(groups[group].label, " " , "+") +') \n\n '; 
+        //groupStr = groupStr + table +  '\n\r And ' + groups[index].numberOldTickets + ' old issue, to see them follow this [link](https://github.com/CJB-Geneve/com-botalista-backend/issues?utf8=✓&q=is%3Aissue+is%3Aclosed+in%3Atitle+%25Error+on+label%3A'+ replaceAll(groups[group].label, " " , "+") +') \n\n ';
         groupStr = groupStr + table +  '\n\r And ' + groups[index].numberOldTickets + ' old issue, to see them follow this link. \n\n ';
         display = display + groupStr;
     }
@@ -118,8 +118,8 @@ function replaceAll(str, find, replace) {
 }
 
 function extractUser(description) {
-    var matchString1 = description.match(/Username : ([a-zA-Z]+[-_.]?[a-zA-z]+)\n\n/g);
-    var matchString2 = description.match(/<br\/>Username : ([a-zA-Z]+[-_.]?[a-zA-z]+)<br\/>/g);
+    var matchString1 = description.match(/Username : ([A-Za-zÀ-ÖØ-öø-ÿ]+[-_.]?[A-Za-zÀ-ÖØ-öø-ÿ]+)\n\n/g);
+    var matchString2 = description.match(/<br\/>Username : ([A-Za-zÀ-ÖØ-öø-ÿ]+[-_.]?[A-Za-zÀ-ÖØ-öø-ÿ]+)<br\/>/g);
 
     if (matchString1 != null) {
         return matchString1.toString().replace(/\n\n/g, '').replace('Username : ', '')

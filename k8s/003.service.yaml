@@ -13,3 +13,41 @@ spec:
     protocol: TCP
   selector:
     app: ticketing
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ticketing-web
+  namespace: business-service
+spec:
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: Host(`ticketing.computaceae-it.tech`)
+    services:
+    - name: ticketing
+      port: 3335
+    middlewares:
+      - name: redirect-https
+        namespace: traefik
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ticketing-web-tls
+  namespace: business-service
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`ticketing.computaceae-it.tech`)
+    services:
+    - name: ticketing
+      port: 3335
+    middlewares:
+      - name: ipwhitelist-legacy
+        namespace: traefik
+  tls:
+    certResolver: letsencryptresolver
