@@ -51,7 +51,12 @@ management:
         include: '*'
   endpoint:
     health:
-      show-details: never
+      probes:
+        enabled: true
+      group:
+        custom:
+          include: ping
+      show-details: always
 health:
   config.time-to-live: 3600000
 spring:
