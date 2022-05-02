@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.computaceae.lib.core.client.mail.FakeMailsClient;
+import org.computaceae.lib.core.client.mail.MailsClient;
 import org.computaceae.lib.core.dto.mail.MailHtmlDTO;
 import org.computaceae.lib.core.errors.container.CustomError;
 import org.computaceae.lib.core.errors.container.value.InconsistentEmptyValue;
@@ -83,7 +83,7 @@ public class IssueManagerServiceImpl implements IssueManagerService {
 
 
   @Autowired
-  private FakeMailsClient mailsClient;
+  private MailsClient mailsClient;
 
   @Autowired
   FreeMarkerConfigurer freeMarkerConfigurer;

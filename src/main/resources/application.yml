@@ -1,18 +1,17 @@
 server:
   port: 3335
-  use-forward-headers: true
+  forward-headers-strategy: native
   tomcat:
-    remote-ip-header: x-forwarded-for
-    protocol-header: x-forwarded-proto
+    remoteip:
+      remote-ip-header: x-forwarded-for
+      protocol-header: x-forwarded-proto
 logging:
   file:
     max-history: 20
     max-size: 50MB
     name: log/app.log
   level:
-    root: INFO
-    org:
-      springframework.web: INFO
+    root: WARN
 #      computaceae: DEBUG
 #      lib:
 #        botalista: DEBUG
