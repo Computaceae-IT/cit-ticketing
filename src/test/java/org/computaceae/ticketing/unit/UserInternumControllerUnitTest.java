@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.HashMap;
 import org.computaceae.ticketing.ExtraConfig;
-import org.computaceae.ticketing.SecurityConfig;
 import org.computaceae.ticketing.service.TicketingService;
 import org.computaceae.ticketing.service.UserService;
 import org.junit.Test;
@@ -25,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test-with-mocked-security")
-@Import({ExtraConfig.class, SecurityConfig.class})
+@Import({ExtraConfig.class})
 public class UserInternumControllerUnitTest {
 
   @SuppressWarnings("unused")

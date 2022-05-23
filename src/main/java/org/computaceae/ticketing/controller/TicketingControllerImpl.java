@@ -41,7 +41,6 @@ public class TicketingControllerImpl extends AbstractController {
    */
   @GetMapping("/labels")
   public ResponseEntity<List<Label>> getLabelsByInternumPass() {
-    System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
     return new ResponseEntity<>(this.ticketingService.getLabels(), HttpStatus.OK);
   }
 
