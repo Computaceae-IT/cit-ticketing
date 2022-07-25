@@ -151,9 +151,11 @@ public class TicketingServiceImpl implements TicketingService {
             TimeUnit.MILLISECONDS));
         updatedAt = LocalDateUtils.convertToLocalDate(issue.getUpdatedAt());
         period = Period.between(now, updatedAt);
-        log.debug("update period " + period + "(y:" + period.getYears() + ",m:" + period.getMonths()
+        log.info("update period " + period + "(y:" + period.getYears() + ",m:" + period.getMonths()
             + ",d:" + period.getDays() + ") for issue " + issue.getTitle() + "(" + issue.getId()
-            + ")");
+            + ") USER : " + this.getUsername(issue));
+
+
 
         if (period.getYears() == 0 && period.getMonths() == 0 && period.getDays() == -1) {
           this.issueManagerService

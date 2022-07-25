@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
    * @param users couple's map username-email
    */
   @Override
-  public void addMailUser(Map<String, String> users) {
+  public synchronized void addMailUser(Map<String, String> users) {
     if (users == null)
       return;
     for (Entry<String, String> entry : users.entrySet()) {
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
    * @param managers couple's map instance's name-email
    */
   @Override
-  public void addMailManager(Map<String, String> managers) {
+  public synchronized void addMailManager(Map<String, String> managers) {
     if (managers == null)
       return;
     for (Entry<String, String> entry : managers.entrySet()) {
