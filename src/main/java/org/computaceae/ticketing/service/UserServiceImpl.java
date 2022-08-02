@@ -2,8 +2,10 @@ package org.computaceae.ticketing.service;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.computaceae.lib.core.dto.ticketing.UserRepresentationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,10 +82,18 @@ public class UserServiceImpl implements UserService {
         .isEmpty(Optional.ofNullable(ur).orElse(new UserRepresentationDTO()).getInstance()))
       return;
 
-    Optional.ofNullable(ur.getManager()).orElse(new HashMap<>()).entrySet().stream()
-        .filter(e -> StringUtils.isEmpty(e.getValue())).map(Map.Entry::getKey)
-        .forEach(key -> ur.getManager().remove(key));
+    List<String> toR = Optional.ofNullable(ur.getManager()).orElse(new HashMap<>()).entrySet()
+        .stream().filter(e -> StringUtils.isEmpty(e.getValue()) || StringUtils.isEmpty(e.getKey()))
+        .map(Map.Entry::getKey).collect(Collectors.toList());
 
+    toR.forEach(key -> ur.getManager().remove(key));
+    
+    
+    toR = Optional.ofNullable(ur.getUsers()).orElse(new HashMap<>()).entrySet()
+        .stream().filter(e -> StringUtils.isEmpty(e.getValue()) || StringUtils.isEmpty(e.getKey()))
+        .map(Map.Entry::getKey).collect(Collectors.toList());
+
+    toR.forEach(key -> ur.getUsers().remove(key));
 
     USERS_REPRESENTATION.put(ur.getInstance(), ur);
   }
