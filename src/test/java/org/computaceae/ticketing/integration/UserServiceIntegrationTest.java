@@ -3,9 +3,9 @@ package org.computaceae.ticketing.integration;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import java.util.HashMap;
+import java.util.Collection;
+import org.computaceae.lib.core.dto.ticketing.UserRepresentationDTO;
 import org.computaceae.ticketing.ExtraConfig;
-import org.computaceae.ticketing.dto.UserDTO;
 import org.computaceae.ticketing.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,177 +37,147 @@ public class UserServiceIntegrationTest {
   public void addMailUserWithEmptyValueTest() {
 
     try {
-      this.userService.addMailUser(null);
+      this.userService.addUserRepresentation(null);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
 
     try {
-      this.userService.addMailUser(new HashMap<String, String>());
+      this.userService.addUserRepresentation(new UserRepresentationDTO());
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
 
+    UserRepresentationDTO ur = new UserRepresentationDTO();
 
     try {
-      this.userService.addMailUser(new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-          put(null, "MOCK");
-        }
-      });
+      ur.setInstance("INSTANCE");
+      this.userService.addUserRepresentation(ur);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
+
+    ur.getUsers().put("MOCK", null);
 
     try {
-      this.userService.addMailUser(new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-          put("MOCK", null);
-        }
-      });
+      this.userService.addUserRepresentation(ur);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
 
-    assertTrue(this.userService.getEmail("MOCK") + ":" + this.defaultMail,
-        this.userService.getEmail("MOCK").contains(this.defaultMail));
+    assertTrue(this.userService.getEmail("MOCK", "INSTANCE") + ":" + this.defaultMail,
+        this.userService.getEmail("MOCK", "INSTANCE").contains(this.defaultMail));
 
   }
 
   @Test
   public void addMailUserTest() {
 
+    UserRepresentationDTO ur = new UserRepresentationDTO();
+    ur.setInstance("INSTANCE");
+    ur.getUsers().put("MOCK1", "MOCK1");
 
     try {
-      this.userService.addMailUser(new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-          put("MOCK1", "MOCK1");
-        }
-      });
+      this.userService.addUserRepresentation(ur);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
 
     try {
-      this.userService.addMailUser(new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-          put("MOCK2", "MOCK2");
-        }
-      });
+      ur.getUsers().put("MOCK2", "MOCK2");
+      this.userService.addUserRepresentation(ur);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
 
-    assertTrue(this.userService.getEmail("MOCK1"),
-        this.userService.getEmail("MOCK1").equals("MOCK1 <MOCK1>"));
+    assertTrue(this.userService.getEmail("MOCK1", "INSTANCE"),
+        this.userService.getEmail("MOCK1", "INSTANCE").equals("MOCK1 <MOCK1>"));
 
-    assertTrue(this.userService.getEmail("MOCK2"),
-        this.userService.getEmail("MOCK2").equals("MOCK2 <MOCK2>"));
+    assertTrue(this.userService.getEmail("MOCK2", "INSTANCE"),
+        this.userService.getEmail("MOCK2", "INSTANCE").equals("MOCK2 <MOCK2>"));
 
-    assertTrue(this.userService.getEmail("MOCK3"),
-        this.userService.getEmail("MOCK3").equals("MOCK3 <" + this.defaultMail + ">"));
+    assertTrue(this.userService.getEmail("MOCK3", "INSTANCE"),
+        this.userService.getEmail("MOCK3", "INSTANCE").equals("MOCK3 <" + this.defaultMail + ">"));
 
   }
 
   @Test
   public void addMailManagerWithEmptyValueTest() {
+    UserRepresentationDTO ur = new UserRepresentationDTO();
+    ur.setInstance("INSTANCE");
+    ur.getManager().put(null, "MOCK");
+
 
     try {
-      this.userService.addMailManager(null);
+      this.userService.addUserRepresentation(ur);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
 
+    ur.getManager().put("MOCK", null);
+
     try {
-      this.userService.addMailManager(new HashMap<String, String>());
+      this.userService.addUserRepresentation(ur);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
-
-
-    try {
-      this.userService.addMailManager(new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-          put(null, "MOCK");
-        }
-      });
-    } catch (Exception e) {
-      log.error(e.getMessage(), e);
-      throw new AssertionError(e);
-    }
-
-    try {
-      this.userService.addMailManager(new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-          put("MOCK", null);
-        }
-      });
-    } catch (Exception e) {
-      log.error(e.getMessage(), e);
-      throw new AssertionError(e);
-    }
-    UserDTO users = this.userService.getUsers();
+    Collection<UserRepresentationDTO> users = this.userService.getUsersRepresentation();
 
     assertNotNull(users);
-    assertNotNull(users.getManagers());
-    assertTrue(users.getManagers().isEmpty());
+    assertTrue(users.stream().filter(u -> "INSTANCE".equals(u.getInstance())).count() == 1);
+
+    ur = users.stream().filter(u -> "INSTANCE".equals(u.getInstance())).findFirst().get();
+
+    assertNotNull(ur.getManager());
+    assertTrue(ur.getManager().isEmpty());
 
   }
 
   @Test
   public void addMailManagerTest() {
 
+    UserRepresentationDTO ur = new UserRepresentationDTO();
+    ur.setInstance("INSTANCE");
+    ur.getManager().put("MOCK1", "MOCK1@MOCK");
 
     try {
-      this.userService.addMailManager(new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-          put("MOCK1", "MOCK1@MOCK");
-        }
-      });
+      this.userService.addUserRepresentation(ur);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new AssertionError(e);
+    }
+    ur.getManager().put("MOCK2", "MOCK2@MOCK");
+    try {
+      this.userService.addUserRepresentation(ur);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new AssertionError(e);
     }
 
-    try {
-      this.userService.addMailManager(new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-          put("MOCK2", "MOCK2@MOCK");
-        }
-      });
-    } catch (Exception e) {
-      log.error(e.getMessage(), e);
-      throw new AssertionError(e);
-    }
-
-    UserDTO users = this.userService.getUsers();
+    Collection<UserRepresentationDTO> users = this.userService.getUsersRepresentation();
 
     assertNotNull(users);
-    assertNotNull(users.getManagers());
-    assertTrue(users.getManagers().toString(), users.getManagers().containsKey("MOCK1"));
-    assertTrue(users.getManagers().toString(), users.getManagers().containsKey("MOCK2"));
-    assertFalse(users.getManagers().toString(), users.getManagers().containsKey("MOCK3"));
+    assertTrue(users.stream().filter(u -> "INSTANCE".equals(u.getInstance())).count() == 1);
 
-    assertTrue(users.getManagers().toString(),
-        users.getManagers().get("MOCK1").equals("MOCK1@MOCK"));
-    assertTrue(users.getManagers().toString(),
-        users.getManagers().get("MOCK2").equals("MOCK2@MOCK"));
+    ur = users.stream().filter(u -> "INSTANCE".equals(u.getInstance())).findFirst().get();
+
+
+    assertNotNull(ur);
+    assertNotNull(ur.getManager());
+    assertTrue(ur.getManager().toString(), ur.getManager().containsKey("MOCK1"));
+    assertTrue(ur.getManager().toString(), ur.getManager().containsKey("MOCK2"));
+    assertFalse(ur.getManager().toString(), ur.getManager().containsKey("MOCK3"));
+
+    assertTrue(ur.getManager().toString(), ur.getManager().get("MOCK1").equals("MOCK1@MOCK"));
+    assertTrue(ur.getManager().toString(), ur.getManager().get("MOCK2").equals("MOCK2@MOCK"));
   }
 
 

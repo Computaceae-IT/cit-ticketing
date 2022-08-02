@@ -40,6 +40,28 @@ spec:
             value: Computaceae-IT
           - name: APP_GITHUB_REPOSITORY
             value: cit-ticketing
+          - name: SPRING_RABBITMQ_HOST
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-secret
+                key: spring.rabbitmq.host
+          - name: SPRING_RABBITMQ_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-secret
+                key: spring.rabbitmq.username
+          - name: SPRING_RABBITMQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-secret
+                key: spring.rabbitmq.password
+          - name: SPRING_RABBITMQ_PORT
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-secret
+                key: spring.rabbitmq.port
+          - name: COM_BOTALISTA_RABBITMQ_QUEUE_INSTANCE
+            value: PRD
         resources:
           requests:
             cpu: 100m

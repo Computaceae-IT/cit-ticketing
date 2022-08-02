@@ -1,8 +1,8 @@
 package org.computaceae.ticketing.controller;
 
-import java.util.Map;
+import java.util.Collection;
 import org.computaceae.lib.core.controller.AbstractController;
-import org.computaceae.ticketing.dto.UserDTO;
+import org.computaceae.lib.core.dto.ticketing.UserRepresentationDTO;
 import org.computaceae.ticketing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,25 +39,10 @@ public class UserInternumControllerImpl extends AbstractController {
    * 
    */
   @PutMapping("/")
-  public @ResponseBody ResponseEntity<Void> putUsers(@RequestBody Map<String, String> users) {
-    this.userService.addMailUser(users);
+  public @ResponseBody ResponseEntity<Void> putUsers(@RequestBody UserRepresentationDTO users) {
+    this.userService.addUserRepresentation(users);
     return new ResponseEntity<>(HttpStatus.OK);
   }
-
-  /**
-   * put a couple instance's name-email on volatile memory
-   * 
-   * @param managers mutiple couple instance's name-email to added
-   * @return a http status; 200 is Ok
-   * 
-   */
-   @PutMapping("/manager/")
-   public @ResponseBody ResponseEntity<Void> putManagers(@RequestBody Map<String, String> managers) {
-   this.userService.addMailManager(managers);
-   return new ResponseEntity<>(HttpStatus.OK);
-   }
-
-
 
   /**
    * get DTO with all couple username-email on volatile memory
@@ -66,7 +51,7 @@ public class UserInternumControllerImpl extends AbstractController {
    * 
    */
   @GetMapping("/")
-  public @ResponseBody ResponseEntity<UserDTO> getUsers() {
-    return new ResponseEntity<>(this.userService.getUsers(), HttpStatus.OK);
+  public @ResponseBody ResponseEntity<Collection<UserRepresentationDTO>> getUsers() {
+    return new ResponseEntity<>(this.userService.getUsersRepresentation(), HttpStatus.OK);
   }
 }

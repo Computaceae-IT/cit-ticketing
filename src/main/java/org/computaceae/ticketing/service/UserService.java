@@ -1,16 +1,14 @@
 package org.computaceae.ticketing.service;
 
-import java.util.Map;
-import org.computaceae.ticketing.dto.UserDTO;
+import java.util.Collection;
+import org.computaceae.lib.core.dto.ticketing.UserRepresentationDTO;
 
 public interface UserService {
 
-  String getEmail(String username);
+  String getEmail(String username, String instance);
 
-  void addMailUser(Map<String, String> users);
+  void addUserRepresentation(UserRepresentationDTO ur);
 
-  void addMailManager(Map<String, String> managers);
-
-  UserDTO getUsers();
+  Collection<UserRepresentationDTO> getUsersRepresentation();
 
 }

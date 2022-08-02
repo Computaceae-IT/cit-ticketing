@@ -1,9 +1,10 @@
 package org.computaceae.ticketing.service;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import org.computaceae.ticketing.dto.UserDTO;
+import java.util.Optional;
+import org.computaceae.lib.core.dto.ticketing.UserRepresentationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +26,9 @@ public class UserServiceImpl implements UserService {
   @SuppressWarnings("unused")
   private static Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
-  private final Map<String, String> mailUsers = new HashMap<String, String>();
-  private final Map<String, String> mailManagers = new HashMap<String, String>();
+
+  private final static Map<String, UserRepresentationDTO> USERS_REPRESENTATION = new HashMap<>();
+
 
   private String defaultMail;
 
@@ -44,20 +46,22 @@ public class UserServiceImpl implements UserService {
   }
 
   /**
-   * get email address from username
+   * get email address from username and a instance's name
    * 
    * @param username unique connection id
+   * @param instance unique
    * @return a mail address
    */
   @Override
-  public String getEmail(String username) {
-    if (StringUtils.isEmpty(username)) {
+  public String getEmail(String username, String instance) {
+    if (StringUtils.isEmpty(username) || StringUtils.isEmpty(instance)) {
       return this.defaultMail;
     }
     StringBuilder sb = new StringBuilder(username);
     sb.append(" <");
-    if (this.mailUsers.containsKey(username)) {
-      sb.append(this.mailUsers.get(username));
+    if (USERS_REPRESENTATION.containsKey(instance)
+        && USERS_REPRESENTATION.get(instance).getUsers().containsKey(username)) {
+      sb.append(USERS_REPRESENTATION.get(instance).getUsers().get(username));
     } else {
       sb.append(this.defaultMail);
     }
@@ -68,33 +72,13 @@ public class UserServiceImpl implements UserService {
   /**
    * store on static variable couple username-email
    * 
-   * @param users couple's map username-email
+   * @param users couple's map username-email stored on UserRepresentationDTO
    */
   @Override
-  public void addMailUser(Map<String, String> users) {
-    if (users == null)
+  public void addUserRepresentation(UserRepresentationDTO ur) {
+    if (StringUtils.isEmpty(Optional.ofNullable(ur).orElse(new UserRepresentationDTO())))
       return;
-    for (Entry<String, String> entry : users.entrySet()) {
-      if (!StringUtils.isEmpty(entry.getValue()) && !StringUtils.isEmpty(entry.getKey())) {
-        this.mailUsers.put(entry.getKey(), entry.getValue());
-      }
-    }
-  }
-
-  /**
-   * store on static variable couple instance's name-email
-   * 
-   * @param managers couple's map instance's name-email
-   */
-  @Override
-  public void addMailManager(Map<String, String> managers) {
-    if (managers == null)
-      return;
-    for (Entry<String, String> entry : managers.entrySet()) {
-      if (!StringUtils.isEmpty(entry.getValue()) && !StringUtils.isEmpty(entry.getKey())) {
-        this.mailManagers.put(entry.getKey(), entry.getValue());
-      }
-    }
+    USERS_REPRESENTATION.put(ur.getInstance(), ur);
   }
 
   /**
@@ -103,13 +87,8 @@ public class UserServiceImpl implements UserService {
    * @return a user dto
    */
   @Override
-  public UserDTO getUsers() {
-    UserDTO user = new UserDTO();
-
-    this.mailManagers.forEach((k, v) -> user.getManagers().putIfAbsent(k, v));
-    this.mailUsers.forEach((k, v) -> user.getUsers().putIfAbsent(k, v));
-
-    return user;
+  public Collection<UserRepresentationDTO> getUsersRepresentation() {
+    return USERS_REPRESENTATION.values();
   }
 
 }
