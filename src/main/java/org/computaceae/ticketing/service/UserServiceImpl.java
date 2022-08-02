@@ -76,8 +76,15 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public void addUserRepresentation(UserRepresentationDTO ur) {
-    if (StringUtils.isEmpty(Optional.ofNullable(ur).orElse(new UserRepresentationDTO())))
+    if (StringUtils
+        .isEmpty(Optional.ofNullable(ur).orElse(new UserRepresentationDTO()).getInstance()))
       return;
+
+    Optional.ofNullable(ur.getManager()).orElse(new HashMap<>()).entrySet().stream()
+        .filter(e -> StringUtils.isEmpty(e.getValue())).map(Map.Entry::getKey)
+        .forEach(key -> ur.getManager().remove(key));
+
+
     USERS_REPRESENTATION.put(ur.getInstance(), ur);
   }
 

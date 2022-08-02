@@ -3,7 +3,7 @@ package org.computaceae.ticketing.unit;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.util.HashMap;
+import org.computaceae.lib.core.dto.ticketing.UserRepresentationDTO;
 import org.computaceae.ticketing.ExtraConfig;
 import org.computaceae.ticketing.service.TicketingService;
 import org.computaceae.ticketing.service.UserService;
@@ -43,31 +43,18 @@ public class UserInternumControllerUnitTest {
 
 
   @Test
-  @SuppressWarnings("serial")
   public void putUsersTest() throws Exception {
 
-    this.mockMvc.perform(
-        put("/internum/user/").content(mapper.writeValueAsString(new HashMap<String, String>() {
-          {
-            put("MOCK_USER1", "MOCK_USER1@MOCK.COM");
-            put("MOCK_USER2", "MOCK_USER2@MOCK.COM");
-            put("MOCK_USER3", "MOCK_USER3@MOCK.COM");
-          }
-        })).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-  }
+    UserRepresentationDTO ur = new UserRepresentationDTO();
+    ur.setInstance("INSTANCE");
+    ur.getUsers().put("MOCK_USER1", "MOCK_USER1@MOCK.COM");
+    ur.getUsers().put("MOCK_USER2", "MOCK_USER2@MOCK.COM");
+    ur.getUsers().put("MOCK_USER3", "MOCK_USER3@MOCK.COM");
 
-  @Test
-  @SuppressWarnings("serial")
-  public void putManagersTest() throws Exception {
+    ur.getManager().put("MOCK_USER3", "MOCK_USER3@MOCK.COM");
 
-    this.mockMvc.perform(put("/internum/user/manager/")
-        .content(mapper.writeValueAsString(new HashMap<String, String>() {
-          {
-            put("MOCK_USER1", "MOCK_USER1@MOCK.COM");
-            put("MOCK_USER2", "MOCK_USER2@MOCK.COM");
-            put("MOCK_USER3", "MOCK_USER3@MOCK.COM");
-          }
-        })).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    this.mockMvc.perform(put("/internum/user/").content(mapper.writeValueAsString(ur))
+        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
   }
 
   @Test
