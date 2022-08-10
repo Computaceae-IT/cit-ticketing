@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.computaceae.lib.core.client.mail.FakeMailsClient;
 import org.computaceae.lib.core.client.mail.MailsClient;
 import org.computaceae.lib.core.dto.mail.MailHtmlDTO;
 import org.computaceae.lib.core.errors.container.CustomError;
@@ -83,9 +82,8 @@ public class IssueManagerServiceImpl implements IssueManagerService {
   private static final String ISSUE_TEMPLATE = "issue.ftlh";
 
 
-  // TODO : keycloak
   @Autowired
-  private FakeMailsClient mailsClient;
+  private MailsClient mailsClient;
 
   @Autowired
   FreeMarkerConfigurer freeMarkerConfigurer;
