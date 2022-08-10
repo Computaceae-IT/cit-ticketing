@@ -11,8 +11,7 @@ logging:
     max-size: 50MB
     name: log/app.log
   level:
-    root: INFO
-#    TODO : keycloak
+    root: WARN
 #      computaceae: DEBUG
 #      lib:
 #        botalista: DEBUG
