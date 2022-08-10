@@ -6,7 +6,7 @@
 
 	<groupId>org.computaceae</groupId>
 	<artifactId>cit-ticketing</artifactId>
-	<version>0.7.0-SNAPSHOT</version>
+	<version>0.4.0</version>
 	<packaging>jar</packaging>
 
 	<name>cit-ticketing</name>
@@ -15,13 +15,13 @@
 	<parent>
 		<groupId>org.computaceae.lib</groupId>
 		<artifactId>cit-cloud-parent</artifactId>
-		<version>3.1.0-SNAPSHOT</version>
+		<version>3.1.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<!-- Computaceae-IT -->
-		<cit-lib-cloud-version>0.7.0-SNAPSHOT</cit-lib-cloud-version>
+		<cit-lib-cloud-version>0.7.0</cit-lib-cloud-version>
 	</properties>
 
 
