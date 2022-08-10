@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -137,8 +138,8 @@ public class TicketingServiceImpl implements TicketingService {
             + ")");
 
         if (period.getYears() == 0 && period.getMonths() == 0 && period.getDays() == -1) {
-          this.issueManagerService
-              .sendCloseIssueMail(this.userService.getEmail(this.getUsername(issue)), issue);
+          this.issueManagerService.sendCloseIssueMail(this.userService
+              .getEmail(this.getUsername(issue), this.getInstanceName(issue.getLabels())), issue);
         }
       } else if (issue != null && issue.getUpdatedAt() != null && issue.getCreatedAt() != null
           && TimeUnit.SECONDS.convert(
@@ -158,8 +159,8 @@ public class TicketingServiceImpl implements TicketingService {
 
 
         if (period.getYears() == 0 && period.getMonths() == 0 && period.getDays() == -1) {
-          this.issueManagerService
-              .sendUpdateIssueMail(this.userService.getEmail(this.getUsername(issue)), issue);
+          this.issueManagerService.sendUpdateIssueMail(this.userService
+              .getEmail(this.getUsername(issue), this.getInstanceName(issue.getLabels())), issue);
         }
       }
     }
@@ -219,8 +220,8 @@ public class TicketingServiceImpl implements TicketingService {
             ticket.getError());
       }
 
-      this.issueManagerService
-          .sendCreationIssueMail(this.userService.getEmail(this.getUsername(issue)), issue);
+      this.issueManagerService.sendCreationIssueMail(this.userService
+          .getEmail(this.getUsername(issue), this.getInstanceName(issue.getLabels())), issue);
 
       return ticket;
     } catch (IOException e) {
@@ -388,6 +389,12 @@ public class TicketingServiceImpl implements TicketingService {
       labels.add(this.instanceToLabel.get("dev"));
     }
     return labels;
+  }
+
+  private String getInstanceName(List<Label> labels) {
+    return Optional.ofNullable(labels).orElse(new ArrayList<>()).stream().map(Label::getName)
+        .filter(l -> l.endsWith("-instance")).findFirst().orElse("dev");
+
   }
 
 }

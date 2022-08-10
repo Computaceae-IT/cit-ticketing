@@ -6,7 +6,7 @@
 
 	<groupId>org.computaceae</groupId>
 	<artifactId>cit-ticketing</artifactId>
-	<version>0.3.0</version>
+	<version>0.7.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>cit-ticketing</name>
@@ -15,13 +15,13 @@
 	<parent>
 		<groupId>org.computaceae.lib</groupId>
 		<artifactId>cit-cloud-parent</artifactId>
-		<version>3.0.0</version>
+		<version>3.1.0-SNAPSHOT</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<!-- Computaceae-IT -->
-		<cit-lib-cloud-version>0.6.3</cit-lib-cloud-version>
+		<cit-lib-cloud-version>0.7.0-SNAPSHOT</cit-lib-cloud-version>
 	</properties>
 
 
@@ -46,10 +46,21 @@
 			<version>2.1.5</version>
 		</dependency>
 
-		  <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>http-client</artifactId>
+			<version>1.3.2.RELEASE</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.computaceae.lib</groupId>
