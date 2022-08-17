@@ -4,6 +4,10 @@ LABEL maintainer="SiropOps <cyril@botalista.community>"
 
 ENV TZ=Europe/Zurich
 
+RUN apk add --update \
+    curl \
+    && rm -rf /var/cache/apk/*
+
 ADD ./target/app.jar /app/
 
 EXPOSE 3335

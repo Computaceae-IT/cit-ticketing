@@ -1,8 +1,7 @@
 package org.computaceae.ticketing;
 
 import java.util.Optional;
-import org.computaceae.lib.core.message.TicketingMessage;
-import org.computaceae.ticketing.config.RabbitDispatcherConfig;
+import org.computaceae.ticketing.component.DataRefreshComponent;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -23,13 +22,13 @@ public class CitTicketingApplication {
   }
 
   @Autowired(required = false)
-  private RabbitDispatcherConfig rabbitDispatcherConfig;
+  private DataRefreshComponent dataRefreshComponent;
 
   @Bean
   synchronized InitializingBean sendResquestOnStartUp() {
     return () -> {
-      if (Optional.ofNullable(this.rabbitDispatcherConfig).isPresent()) {
-        this.rabbitDispatcherConfig.sendTicketing(new TicketingMessage(true));
+      if (Optional.ofNullable(this.dataRefreshComponent).isPresent()) {
+        this.dataRefreshComponent.refreshUsersOnStartup();
       }
     };
   }
