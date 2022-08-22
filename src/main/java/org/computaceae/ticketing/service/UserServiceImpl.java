@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
       log.info("find email : " + USERS_REPRESENTATION.get(instance).getUsers().get(username));
       sb.append(USERS_REPRESENTATION.get(instance).getUsers().get(username));
     } else {
-      log.info("Not fund " + username + " on " + instance + " --> use default email");
+      log.warn("Not fund " + username + " on " + instance + " --> use default email");
       sb.append(this.defaultMail);
     }
     sb.append(">");
