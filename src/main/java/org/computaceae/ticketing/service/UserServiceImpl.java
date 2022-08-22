@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
       return this.defaultMail;
     }
 
-    instance = instance.replace("-instance", "");
+    instance = instance.replace("-instance", "").toUpperCase();
 
     log.info("getEmail : " + username + " " + instance);
     StringBuilder sb = new StringBuilder(username);
