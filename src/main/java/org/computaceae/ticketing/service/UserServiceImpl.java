@@ -60,6 +60,10 @@ public class UserServiceImpl implements UserService {
     if (StringUtils.isEmpty(username) || StringUtils.isEmpty(instance)) {
       return this.defaultMail;
     }
+
+    instance = instance.replace("-instance", "");
+
+    log.info("getEmail : " + username + " " + instance);
     StringBuilder sb = new StringBuilder(username);
     sb.append(" <");
     log.info("containsKey : " + USERS_REPRESENTATION.containsKey(instance));
