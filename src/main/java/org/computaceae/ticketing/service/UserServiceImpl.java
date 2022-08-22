@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public String getEmail(String username, String instance) {
+    log.info("getEmail : " + username + " " + instance);
     if (StringUtils.isEmpty(username) || StringUtils.isEmpty(instance)) {
       return this.defaultMail;
     }
@@ -87,10 +88,10 @@ public class UserServiceImpl implements UserService {
         .map(Map.Entry::getKey).collect(Collectors.toList());
 
     toR.forEach(key -> ur.getManager().remove(key));
-    
-    
-    toR = Optional.ofNullable(ur.getUsers()).orElse(new HashMap<>()).entrySet()
-        .stream().filter(e -> StringUtils.isEmpty(e.getValue()) || StringUtils.isEmpty(e.getKey()))
+
+
+    toR = Optional.ofNullable(ur.getUsers()).orElse(new HashMap<>()).entrySet().stream()
+        .filter(e -> StringUtils.isEmpty(e.getValue()) || StringUtils.isEmpty(e.getKey()))
         .map(Map.Entry::getKey).collect(Collectors.toList());
 
     toR.forEach(key -> ur.getUsers().remove(key));
