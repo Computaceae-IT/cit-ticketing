@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
     }
     StringBuilder sb = new StringBuilder(username);
     sb.append(" <");
+    log.info("containsKey : " + USERS_REPRESENTATION.containsKey(instance));
     if (USERS_REPRESENTATION.containsKey(instance)
         && USERS_REPRESENTATION.get(instance).getUsers().containsKey(username)) {
       sb.append(USERS_REPRESENTATION.get(instance).getUsers().get(username));
