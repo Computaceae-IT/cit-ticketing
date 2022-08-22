@@ -66,11 +66,12 @@ public class UserServiceImpl implements UserService {
     log.info("getEmail : " + username + " " + instance);
     StringBuilder sb = new StringBuilder(username);
     sb.append(" <");
-    log.info("containsKey : " + USERS_REPRESENTATION.containsKey(instance));
     if (USERS_REPRESENTATION.containsKey(instance)
         && USERS_REPRESENTATION.get(instance).getUsers().containsKey(username)) {
+      log.info("find email : " + USERS_REPRESENTATION.get(instance).getUsers().get(username));
       sb.append(USERS_REPRESENTATION.get(instance).getUsers().get(username));
     } else {
+      log.info("Not fund " + username + " on " + instance + " --> use default email");
       sb.append(this.defaultMail);
     }
     sb.append(">");
