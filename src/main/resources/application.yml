@@ -11,7 +11,7 @@ logging:
     max-size: 50MB
     name: log/app.log
   level:
-    root: WARN
+    root: INFO
 #      computaceae: DEBUG
 #      lib:
 #        botalista: DEBUG
