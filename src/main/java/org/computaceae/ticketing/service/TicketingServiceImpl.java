@@ -56,6 +56,8 @@ public class TicketingServiceImpl implements TicketingService {
   final static List<String> OFFICIAL_LABEL_NAMES = Arrays.asList("bug", "missing blocking feature",
       "missing feature", "enhancement", "optional enhancement", "question");
 
+  private final static String LABEL_HELP_NAME = "help wanted";
+
   private final List<Label> labels = new ArrayList<>();
 
   private final Map<String, Label> instanceToLabel = new HashMap<>();
@@ -68,6 +70,8 @@ public class TicketingServiceImpl implements TicketingService {
 
   private final String user;
   private final String repository;
+
+
 
   /**
    * TicketingServiceImpl constructor.
@@ -144,19 +148,20 @@ public class TicketingServiceImpl implements TicketingService {
       } else if (issue != null && issue.getUpdatedAt() != null && issue.getCreatedAt() != null
           && TimeUnit.SECONDS.convert(
               Math.abs(issue.getUpdatedAt().getTime() - issue.getCreatedAt().getTime()),
-              TimeUnit.MILLISECONDS) > 30) {
+              TimeUnit.MILLISECONDS) > 30
+          && this.hasLabel(issue.getLabels(), LABEL_HELP_NAME)) {
         log.debug("UpdatedAt : " + issue.getUpdatedAt());
         log.debug("CreatedAt : " + issue.getCreatedAt());
         log.debug("Period UpdatedAt-CreatedAt : " + TimeUnit.SECONDS.convert(
             Math.abs(issue.getUpdatedAt().getTime() - issue.getCreatedAt().getTime()),
             TimeUnit.MILLISECONDS));
+        log.debug("Labels : {}", issue.getLabels());
+
         updatedAt = LocalDateUtils.convertToLocalDate(issue.getUpdatedAt());
         period = Period.between(now, updatedAt);
         log.info("update period " + period + "(y:" + period.getYears() + ",m:" + period.getMonths()
             + ",d:" + period.getDays() + ") for issue " + issue.getTitle() + "(" + issue.getId()
             + ") USER : " + this.getUsername(issue));
-
-
 
         if (period.getYears() == 0 && period.getMonths() == 0 && period.getDays() == -1) {
           this.issueManagerService.sendUpdateIssueMail(this.userService
@@ -164,6 +169,24 @@ public class TicketingServiceImpl implements TicketingService {
         }
       }
     }
+  }
+
+  private boolean hasLabel(final List<Label> labels, final String name) {
+    if (Optional.ofNullable(labels).orElse(new ArrayList<>()).isEmpty()) {
+      return false;
+    }
+
+    if (StringUtils.isEmpty(name)) {
+      return true;
+    }
+
+    for (Label label : labels) {
+      if (name.equals(label.getName())) {
+        return true;
+      }
+    }
+    return false;
+
   }
 
   /**
