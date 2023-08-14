@@ -35,12 +35,23 @@ node {
 			withCredentials([
 					string(credentialsId: 'app.token.github', variable: 'TOKEN_GITHUB')
 				]) {
-				JAVA_ENV = "-e app.github.token=${TOKEN_GITHUB} -e app.github.user=Computaceae-IT -e app.github.repository=cit-ticketing -e app.admin.mail=test@mail.com"
-			}
-			def RABBIT_MQ_ENV = "-e com.botalista.rabbitmq.queue.instance=SM-BOTALISTA-CI-${env.BRANCH_NAME} -e spring.rabbitmq.host=rabbit -e spring.rabbitmq.port=5672 -e spring.rabbitmq.username=rabbitmq -e spring.rabbitmq.password=rabbitmq"
 			
-			docker.image('maven:3.8.6-openjdk-11-slim').inside("--net ci-bridge -v maven-repo:/root/.m2 ${JAVA_ENV} ${RABBIT_MQ_ENV}") {
-				sh 'mvn -Duser.timezone=Europe/Zurich -U clean install'
+    			docker.image('maven:3.8.6-openjdk-11-slim').inside("--net ci-bridge -v maven-repo:/root/.m2") {
+                    sh "mvn "+
+                    "-Duser.timezone=Europe/Zurich "+
+                    /* GITHUB */
+                    "-Dapp.github.token=${TOKEN_GITHUB} "+
+                    "-Dapp.github.user=Computaceae-IT "+
+                    "-Dapp.github.repository=cit-ticketing "+
+                    "-Dapp.admin.mail=test@mail.com "+
+                    /* GITHUB */
+                    "-Dcom.botalista.rabbitmq.queue.instance=SM-BOTALISTA-CI-${env.BRANCH_NAME} "+
+                    "-Dspring.rabbitmq.host=rabbit "+
+                    "-Dspring.rabbitmq.port=5672 "+
+                    "-Dspring.rabbitmq.username=rabbitmq "+
+                    "-Dspring.rabbitmq.password=rabbitmq "+
+                    "-U clean install"
+    				}
 
 			}
 		}
