@@ -39,7 +39,7 @@ node {
 			}
 			def RABBIT_MQ_ENV = "-e com.botalista.rabbitmq.queue.instance=SM-BOTALISTA-CI-${env.BRANCH_NAME} -e spring.rabbitmq.host=rabbit -e spring.rabbitmq.port=5672 -e spring.rabbitmq.username=rabbitmq -e spring.rabbitmq.password=rabbitmq"
 			
-			docker.image('maven:3.5.2-jdk-8-alpine').inside("--net ci-bridge -v maven-repo:/root/.m2 ${JAVA_ENV} ${RABBIT_MQ_ENV}") {
+			docker.image('maven:3.8.6-openjdk-11-slim').inside("--net ci-bridge -v maven-repo:/root/.m2 ${JAVA_ENV} ${RABBIT_MQ_ENV}") {
 				sh 'mvn -Duser.timezone=Europe/Zurich -U clean install'
 
 			}
@@ -47,7 +47,7 @@ node {
 
 		stage('SonarQube analysis') {
 			withSonarQubeEnv('Sonar') {
-				docker.image('maven:3.5.2-jdk-8-alpine').inside('-v maven-repo:/root/.m2') {
+				docker.image('maven:3.8.6-openjdk-11-slim').inside('-v maven-repo:/root/.m2') {
 					sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.5.0.1254:sonar'
 				}
 			}

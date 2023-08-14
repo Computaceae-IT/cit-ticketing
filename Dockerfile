@@ -1,12 +1,8 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:11-jre
 
 LABEL maintainer="SiropOps <cyril@botalista.community>"
 
 ENV TZ=Europe/Zurich
-
-RUN apk add --update \
-    curl \
-    && rm -rf /var/cache/apk/*
 
 ADD ./target/app.jar /app/
 
