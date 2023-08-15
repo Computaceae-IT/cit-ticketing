@@ -36,7 +36,7 @@ node {
 					string(credentialsId: 'app.token.github', variable: 'TOKEN_GITHUB')
 				]) {
 			
-    			docker.image('maven:3.8.6-openjdk-11-slim').inside("--net ci-bridge -v maven-repo:/root/.m2") {
+    			docker.image('maven:3.8.6-openjdk-11-slim').inside("--net ci-bridge -v maven-repo-11:/root/.m2") {
                     sh "mvn "+
                     "-Duser.timezone=Europe/Zurich "+
                     /* GITHUB */
@@ -58,7 +58,7 @@ node {
 
 		stage('SonarQube analysis') {
 			withSonarQubeEnv('Sonar') {
-				docker.image('maven:3.8.6-openjdk-11-slim').inside('-v maven-repo:/root/.m2') {
+				docker.image('maven:3.8.6-openjdk-11-slim').inside('-v maven-repo-11:/root/.m2') {
 					sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.5.0.1254:sonar'
 				}
 			}
