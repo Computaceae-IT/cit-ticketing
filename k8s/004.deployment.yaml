@@ -68,7 +68,7 @@ spec:
             memory: 70Mi
           limits:
             cpu: 700m
-            memory: 300Mi
+            memory: 400Mi
         ports:
         - name: http
           containerPort: 3335
