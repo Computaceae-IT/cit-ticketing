@@ -13,7 +13,11 @@ node {
 			/* Let's make sure we have the repository cloned to our workspace */
 			checkout scm
 		}
-
+	        stage('Git log') {
+			sh '''
+   				git log --since=53.weeks --numstat --pretty="%ae %H" | sed 's/@.*//g' | awk '{ if (NF == 1){ name = $1}; if(NF == 3) {plus[name] += $1; minus[name] += $2}} END { for (name in plus) {print name": +"plus[name]" -"minus[name]}}' | sort -k2 -gr
+       			'''
+		}
 		stage('SED Deployment variable') {
 			script {
 				env.DEPLOY_COMMIT_HASH = sh(returnStdout: true, script: "git rev-parse HEAD | cut -c1-7").trim()
