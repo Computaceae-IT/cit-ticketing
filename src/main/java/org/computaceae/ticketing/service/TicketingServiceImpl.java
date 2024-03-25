@@ -408,6 +408,12 @@ public class TicketingServiceImpl implements TicketingService {
         findIntance = true;
       }
     }
+    if (Optional.ofNullable(ticket.getUrl()).orElse("")
+        .contains("collections-vegetales.nantes.fr")) {
+      labels.add(this.instanceToLabel.get("ntm"));
+      findIntance = true;
+    }
+
     if (!findIntance) {
       labels.add(this.instanceToLabel.get("dev"));
     }
