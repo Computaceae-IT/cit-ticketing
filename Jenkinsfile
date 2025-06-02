@@ -13,7 +13,15 @@ node {
 			/* Let's make sure we have the repository cloned to our workspace */
 			checkout scm
 		}
-	        stage('Git log') {
+        stage('K8s-migration') {
+            if (env.JENKINS_URL.contains('jenkins.computaceae-it.tech')) {
+      
+                echo "Skipping build on old Jenkins for k8s-migration"
+                throw new InterruptedException("k8s-migration branch should not be built on old Jenkins.")
+                
+            }
+        }
+	    stage('Git log') {
 			sh '''
    				git log --since=53.weeks --numstat --pretty="%ae %H" | sed 's/@.*//g' | awk '{ if (NF == 1){ name = $1}; if(NF == 3) {plus[name] += $1; minus[name] += $2}} END { for (name in plus) {print name": +"plus[name]" -"minus[name]}}' | sort -k2 -gr
        			'''

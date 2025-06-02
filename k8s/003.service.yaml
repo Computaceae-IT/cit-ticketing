@@ -14,7 +14,7 @@ spec:
   selector:
     app: ticketing
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: ticketing-web
@@ -29,10 +29,10 @@ spec:
     - name: ticketing
       port: 3335
     middlewares:
-      - name: redirect-https
-        namespace: traefik
+    - name: kube-system-ip-whitelist@kubernetescrd
+    - name: kube-system-redirect-to-https@kubernetescrd
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: ticketing-web-tls
@@ -47,7 +47,6 @@ spec:
     - name: ticketing
       port: 3335
     middlewares:
-      - name: ipwhitelist-legacy
-        namespace: traefik
+    - name: kube-system-ip-whitelist@kubernetescrd
   tls:
-    certResolver: letsencryptresolver
+    certResolver: le
