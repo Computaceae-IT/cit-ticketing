@@ -1,4 +1,4 @@
-FROM openjdk:11-jre
+FROM eclipse-temurin:11-jre-jammy
 
 LABEL maintainer="SiropOps <cyril@botalista.community>"
 
