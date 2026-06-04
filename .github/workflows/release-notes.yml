@@ -1,0 +1,37 @@
+name: Generate release notes
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to regenerate
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  generate-release-notes:
+    name: Generate release notes with gren
+    runs-on: ubuntu-latest
+
+    env:
+      TAG_NAME: ${{ github.event.release.tag_name || inputs.tag }}
+      GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Regenerate GitHub release notes
+        run: npx -y -p github-release-notes@0.17.3 gren release --override --tags="$TAG_NAME"
