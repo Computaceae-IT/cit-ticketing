@@ -1,10 +1,12 @@
 var table_issues = [];
+var rendered = false;
 var groups = [
     {"priority" : 0, "label":"bug", "title" : "Bugs Fixes (priority 0)", "numberOldTickets" : 0, "total" : 0},
     {"priority" : 1, "label":"missing blocking feature" , "title" :"Missing blocking feature (priority 1)", "numberOldTickets" : 0, "total" : 0},
     {"priority" : 2, "label":"missing feature", "title" :"Missing feature (priority 2)", "numberOldTickets" : 0, "total" : 0},
     {"priority" : 3, "label":"enhancement" , "title" :"Enhancements (priority 3)", "numberOldTickets" : 0, "total" : 0},
-    {"priority" : 4, "label":"optional enhancement", "title" : "Optional Enhancements (priority 4)", "numberOldTickets" : 0, "total" : 0}
+    {"priority" : 4, "label":"optional enhancement", "title" : "Optional Enhancements (priority 4)", "numberOldTickets" : 0, "total" : 0},
+    {"priority" : 5, "label":"other", "title" : "Other closed tickets", "numberOldTickets" : 0, "total" : 0}
 ]
 
 var filename = "ReleaseNotes";
@@ -17,7 +19,8 @@ module.exports = {
         "Missing blocking feature (priority 1)" : ["missing blocking feature"],
         "Missing feature (priority 2)" : ["missing feature"],
         "Enhancements (priority 3)" : ["enhancement"],
-        "Optional Enhancements (priority 4)" : ["optional enhancement"]
+        "Optional Enhancements (priority 4)" : ["optional enhancement"],
+        "Other closed tickets" : ["duplicate", "invalid", "help wanted", "question", "view", "filter", "documentation", "wontfix", "good first issue", "briss-instance", "g-instance", "jbp-instance", "mey-instance", "ncy-instance", "ntm-instance", "rc-instance"]
     },
     "changelogFilename": filename.trim() + ".md",
     "onlyMilestone" : false,
@@ -25,21 +28,20 @@ module.exports = {
     "template" : {
 
         "changelogTitle" : "# Release Notes \n\n",
-        "release" : "## {{release}} \n\n This file contents the resume of all the issues closed in this release. \n If you need more informations contact the CJB. \n\n {{body}}\n\n",
+        release : function(release){
+            var output = "## " + release.release + " \n\n This file contents the resume of all the issues closed in this release. \n If you need more informations contact the CJB. \n\n " + release.body + "\n\n";
+            resetReleaseState();
+            return output;
+        },
         "releaseSeparator" : "\n***\n\n",
 
         issue : function (issue){
 
             // get the label index to be able to fill the table of issues
-            var index = null;
-            var labels = issue.labels.split(";");
-            for (var i=0; i< labels.length; i++){
-                index = getIndexFromLabel(labels[i]);
-                if (index != null)
-                    break;
-            }
+            var labels = getLabelNames(issue.labels);
+            var index = getIndexFromLabels(labels);
 
-            if (issue.name.indexOf("Error on ") >= 0){
+            if ((issue.name || "").indexOf("Error on ") >= 0){
                 // count the number of old ticket per label
                 groups[index].numberOldTickets = groups[index].numberOldTickets + 1;
             } else {
@@ -53,17 +55,58 @@ module.exports = {
 
             groups[index].total = groups[index].total + 1;
 
+            return "";
+
         },
 
         label : function(label){
-            return label.label + ';';
+            return getLabelName(label) + ';';
         },
 
         group : function(group){
-            var v = displayIssues(table_issues);
+            if (rendered)
+                return "";
+
+            rendered = true;
             return displayIssues(table_issues);
         }
     }
+}
+
+function getLabelNames(labels){
+    if (labels == null || labels === "")
+        return [];
+
+    if (Array.isArray(labels))
+        return labels.map(getLabelName).filter(function(label){ return label !== ""; });
+
+    return labels.split(";").map(getLabelName).filter(function(label){ return label !== ""; });
+}
+
+function getLabelName(label){
+    if (label == null)
+        return "";
+
+    if (typeof label === "string")
+        return label.trim();
+
+    if (label.label != null)
+        return String(label.label).trim();
+
+    if (label.name != null)
+        return String(label.name).trim();
+
+    return "";
+}
+
+function getIndexFromLabels(labels){
+    for (var i=0; i< labels.length; i++){
+        var index = getIndexFromLabel(labels[i]);
+        if (index != null)
+            return index;
+    }
+
+    return getIndexFromLabel("other");
 }
 
 // extract the priority/index from the label
@@ -75,6 +118,15 @@ function getIndexFromLabel(label){
 
     return null;
 
+}
+
+function resetReleaseState(){
+    table_issues = [];
+    rendered = false;
+    for (var group=0; group <groups.length; group++){
+        groups[group].numberOldTickets = 0;
+        groups[group].total = 0;
+    }
 }
 
 
@@ -93,7 +145,7 @@ function displayIssues(issues){
         if (issues[index] != undefined)
             for (var i=0; i< issues[index].length;i++){
                 table = table + '| ' + issues[index][i].text
-                    + ' |' + issues[index][i].name + '<br><br>' + extractDescription(issues[index][i].body).replace(/[\n\r]/g, '<br>')
+                    + ' |' + issues[index][i].name + '<br><br>' + extractDescription(issues[index][i].body || "").replace(/[\n\r]/g, '<br>')
                     + ' | ' + displayLabels(issues[index][i].labels)
                     + ' | ' + extractUser(issues[index][i].body)
                     + '|\r';
@@ -118,6 +170,9 @@ function replaceAll(str, find, replace) {
 }
 
 function extractUser(description) {
+    if (description == null)
+        return '';
+
     var matchString1 = description.match(/Username : ([A-Za-zÀ-ÖØ-öø-ÿ]+[-_.]?[A-Za-zÀ-ÖØ-öø-ÿ]+)\n\n/g);
     var matchString2 = description.match(/<br\/>Username : ([A-Za-zÀ-ÖØ-öø-ÿ]+[-_.]?[A-Za-zÀ-ÖØ-öø-ÿ]+)<br\/>/g);
 
@@ -129,6 +184,9 @@ function extractUser(description) {
 }
 
 function extractDescription(description) {
+    if (description == null)
+        return '';
+
     var index = description.indexOf('Description : ');
     if(index>0)
         return description.substring(index, description.length);
@@ -138,7 +196,7 @@ function extractDescription(description) {
 // format the label to match a badge
 function displayLabels(origLabels){
     var display = "";
-    var labels = origLabels.split(";");
+    var labels = getLabelNames(origLabels);
 
     for (var i=0; i< labels.length; i++){
         var color, background;
