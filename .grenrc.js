@@ -145,7 +145,7 @@ function displayIssues(issues){
         if (issues[index] != undefined)
             for (var i=0; i< issues[index].length;i++){
                 table = table + '| ' + issues[index][i].text
-                    + ' |' + issues[index][i].name + '<br><br>' + extractDescription(issues[index][i].body || "").replace(/[\n\r]/g, '<br>')
+                    + ' | ' + issues[index][i].name
                     + ' | ' + displayLabels(issues[index][i].labels)
                     + ' | ' + extractUser(issues[index][i].body)
                     + '|\r';

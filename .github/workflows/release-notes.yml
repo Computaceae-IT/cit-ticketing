@@ -20,7 +20,8 @@ jobs:
 
     env:
       TAG_NAME: ${{ github.event.release.tag_name || inputs.tag }}
-      GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_ID: ${{ github.event.release.id }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -34,4 +35,4 @@ jobs:
           node-version: 18
 
       - name: Regenerate GitHub release notes
-        run: npx -y -p github-release-notes@0.17.3 gren release --override --tags="$TAG_NAME"
+        run: node .github/scripts/generate-release-notes.js
