@@ -1,4 +1,4 @@
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 const path = require("path");
 
 const token = process.env.GITHUB_TOKEN;
@@ -46,9 +46,18 @@ async function github(pathname, options = {}) {
 }
 
 function getTags() {
-  const output = execSync("git for-each-ref --sort=-creatordate refs/tags --format=%(refname:short)%09%(creatordate:iso8601-strict)", {
-    encoding: "utf8",
-  });
+  const output = execFileSync(
+    "git",
+    [
+      "for-each-ref",
+      "--sort=-creatordate",
+      "refs/tags",
+      "--format=%(refname:short)%09%(creatordate:iso8601-strict)",
+    ],
+    {
+      encoding: "utf8",
+    },
+  );
 
   return output
     .trim()
