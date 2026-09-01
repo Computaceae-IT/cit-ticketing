@@ -29,7 +29,7 @@ module.exports = {
 
         "changelogTitle" : "# Release Notes \n\n",
         release : function(release){
-            var output = "## " + release.release + " \n\n This file contents the resume of all the issues closed in this release. \n If you need more informations contact the CJB. \n\n " + release.body + "\n\n";
+            var output = "## " + release.release + " \n\n This file contents the resume of all the issues closed in this release. \n If you need more informations contact the Botalista Team. \n\n " + release.body + "\n\n";
             resetReleaseState();
             return output;
         },
